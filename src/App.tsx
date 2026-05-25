@@ -658,22 +658,21 @@ function buildGlowVars(gc, int = 1) {
   };
 }
 const GP = [
-    '80% 55%',
-    '69% 34%',
-    '8% 6%',
-    '41% 38%',
-    '86% 85%',
-    '82% 18%',
-    '51% 4%',
-  ],
+  '80% 55%',
+  '69% 34%',
+  '8% 6%',
+  '41% 38%',
+  '86% 85%',
+  '82% 18%',
+  '51% 4%',
+],
   GK = ['--g1', '--g2', '--g3', '--g4', '--g5', '--g6', '--g7'],
   CM = [0, 1, 2, 0, 1, 2, 1];
 function buildGradVars(colors) {
   const v = {};
   for (let i = 0; i < 7; i++) {
-    v[GK[i]] = `radial-gradient(at ${GP[i]}, ${
-      colors[Math.min(CM[i], colors.length - 1)]
-    } 0px, transparent 50%)`;
+    v[GK[i]] = `radial-gradient(at ${GP[i]}, ${colors[Math.min(CM[i], colors.length - 1)]
+      } 0px, transparent 50%)`;
   }
   v['--gb'] = `linear-gradient(${colors[0]} 0 100%)`;
   return v;
@@ -1017,7 +1016,6 @@ const LANGUAGES = [
   { lang: 'English', level: 'Fluent', pct: 90 },
 ];
 
-// Marquee of past client sites
 const MARQUEE_SITES = [
   { name: 'UNDP DigitalX', url: 'https://digitalx.undp.org/index.html' },
   { name: 'Data to Policy', url: 'https://www.datatopolicy.org/' },
@@ -1366,8 +1364,6 @@ function ExperienceList({ items }) {
 
 /* Marquee strip */
 function Marquee({ items }) {
-  const track = useRef(null);
-  // CSS animation approach — no JS needed
   return (
     <div
       style={{
@@ -1387,7 +1383,6 @@ function Marquee({ items }) {
         .marquee-track:hover{animation-play-state:paused;}
       `}</style>
       <div className="marquee-track">
-        {/* Duplicate for seamless loop */}
         {[...items, ...items].map((s, i) => (
           <a
             key={i}
@@ -1430,7 +1425,7 @@ function Marquee({ items }) {
 }
 
 /* FAQ accordion item */
-function FaqItem({ q, a, idx }) {
+function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ borderBottom: '1px solid #1a1030', overflow: 'hidden' }}>
@@ -1532,13 +1527,21 @@ const GLOBAL_CSS = `
   .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;}
   .process-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:20px;}
   .articles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;}
+
+  /* ── Contact: 2-col desktop, 1-col mobile ── */
+  .contact-2col{display:grid;grid-template-columns:1fr 1fr;gap:0 80px;align-items:start;}
+  @media(max-width:768px){.contact-2col{grid-template-columns:1fr;gap:48px 0;}}
+
+  /* ── Contact inner grid (first/last name) ── */
   .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media(max-width:640px){.contact-grid{grid-template-columns:1fr;}}
 
+  /* ── FAQs: 2-col desktop, 1-col mobile ── */
+  .faq-2col{display:grid;grid-template-columns:1fr 1fr;gap:0 80px;align-items:start;}
+  @media(max-width:768px){.faq-2col{grid-template-columns:1fr;gap:32px 0;}}
+
   .hero-h1{font-size:clamp(48px,10vw,110px);font-weight:700;line-height:1.02;letter-spacing:-4px;margin-bottom:24px;animation:fadeUp .6s .1s ease both;}
   @media(max-width:480px){.hero-h1{letter-spacing:-2px;}}
-  .testi-pair{display:grid;gap:24px;}
-  @media(max-width:640px){.testi-pair{grid-template-columns:1fr!important;}}
   .hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
   @media(max-width:640px){section{padding:60px 0!important;}.modal-inner{padding:24px!important;}}
 `;
@@ -1560,12 +1563,30 @@ export default function Portfolio() {
     message: '',
   });
 
+  // ── RESPONSIVE testimonials: 1 on mobile, 2 on tablet, 3 on desktop ──
+  const [tPerSlide, setTPerSlide] = useState(2);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setTPerSlide(w < 640 ? 1 : w < 900 ? 2 : 3);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  // Reset slide index when per-slide count changes to avoid blank slides
+  useEffect(() => {
+    setTSlide(0);
+  }, [tPerSlide]);
+
   const tGroups = useMemo(() => {
     const g = [];
-    for (let i = 0; i < TESTIMONIALS.length; i += 2)
-      g.push(TESTIMONIALS.slice(i, i + 2));
+    for (let i = 0; i < TESTIMONIALS.length; i += tPerSlide)
+      g.push(TESTIMONIALS.slice(i, i + tPerSlide));
     return g;
-  }, []);
+  }, [tPerSlide]);
 
   useEffect(() => {
     const timer = setInterval(
@@ -1577,6 +1598,7 @@ export default function Portfolio() {
 
   const scrollTo = (id) =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
   const handleSend = () => {
     setSent(true);
     setForm({
@@ -1590,6 +1612,7 @@ export default function Portfolio() {
     });
     setTimeout(() => setSent(false), 4000);
   };
+
   const activeProject = PROJECTS.find((p) => p.id === openCase);
   const expLeft = EXPERIENCE.filter((_, i) => i % 2 === 0);
   const expRight = EXPERIENCE.filter((_, i) => i % 2 !== 0);
@@ -1793,7 +1816,7 @@ export default function Portfolio() {
             textColor: '#e8e8e8',
             links: [
               { label: 'Get in Touch', onClick: () => scrollTo('Contact') },
-              { label: 'ousauser@gmail.com', onClick: () => {} },
+              { label: 'ousauser@gmail.com', onClick: () => { } },
             ],
           },
         ]}
@@ -2419,20 +2442,6 @@ export default function Portfolio() {
           <div className="process-grid">
             {PROCESS.map((step, i) => (
               <div key={step.num} style={{ position: 'relative' }}>
-                {/* Connector line between steps */}
-                {i < PROCESS.length - 1 && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 20,
-                      left: 'calc(100% - 10px)',
-                      width: '100%',
-                      height: 1,
-                      background: `linear-gradient(90deg,${ACCENT}44,transparent)`,
-                      display: 'none',
-                    }}
-                  />
-                )}
                 <div
                   style={{
                     padding: '24px',
@@ -2797,10 +2806,12 @@ export default function Portfolio() {
             >
               {tGroups.map((group, gi) => (
                 <div key={gi} style={{ minWidth: '100%' }}>
+                  {/* ── Responsive grid: columns set by tPerSlide ── */}
                   <div
-                    className="testi-pair"
                     style={{
-                      gridTemplateColumns: `repeat(${group.length},1fr)`,
+                      display: 'grid',
+                      gridTemplateColumns: `repeat(${group.length}, 1fr)`,
+                      gap: 24,
                     }}
                   >
                     {group.map((t) => (
@@ -2930,14 +2941,8 @@ export default function Portfolio() {
       <Section style={{ paddingTop: 0 }}>
         <Inner>
           <SL n="08" label="FAQS" />
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0 80px',
-              alignItems: 'start',
-            }}
-          >
+          {/* ── faq-2col: 2-col on desktop, stacks on mobile ── */}
+          <div className="faq-2col">
             <div>
               <h2
                 style={{
@@ -2965,7 +2970,7 @@ export default function Portfolio() {
             </div>
             <div>
               {FAQS.map((f, i) => (
-                <FaqItem key={i} q={f.q} a={f.a} idx={i} />
+                <FaqItem key={i} q={f.q} a={f.a} />
               ))}
             </div>
           </div>
@@ -3087,14 +3092,8 @@ export default function Portfolio() {
       <Section id="Contact" style={{ paddingTop: 0 }}>
         <Inner>
           <SL n="10" label="CONTACT" />
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0 80px',
-              alignItems: 'start',
-            }}
-          >
+          {/* ── contact-2col: 2-col on desktop, stacks on mobile ── */}
+          <div className="contact-2col">
             {/* Left col — info */}
             <div>
               <h2

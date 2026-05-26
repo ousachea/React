@@ -1927,7 +1927,7 @@ export default function Portfolio() {
                   animation: 'fadeUp .6s .15s ease both',
                 }}
               >
-                UX/UI, Web Design & Development.
+                UX/UI, Web Design & Project Management.
               </p>
               <p
                 style={{
@@ -1941,8 +1941,7 @@ export default function Portfolio() {
                   animation: 'fadeUp .6s .2s ease both',
                 }}
               >
-                Crafting seamless digital experiences — from design to
-                development.
+                Designing, building, and delivering digital products — end to end.
               </p>
               <div
                 style={{
@@ -1953,7 +1952,7 @@ export default function Portfolio() {
                   animation: 'fadeUp .6s .25s ease both',
                 }}
               >
-                {['Phnom Penh, Cambodia', 'Web Design', 'UX/UI', 'Webflow'].map(
+                {['Phnom Penh, Cambodia', 'Project Management', 'UX/UI', 'Web Design'].map(
                   (tag) => (
                     <span
                       key={tag}
@@ -2025,8 +2024,9 @@ export default function Portfolio() {
             {/* Right — profile card */}
             <ProfileCard
               avatarUrl="https://media.licdn.com/dms/image/v2/D5603AQFlf_kv3pQYKw/profile-displayphoto-shrink_800_800/B56ZWi8ZOmGQAc-/0/1742195498963?e=1781136000&v=beta&t=s-JA6nbi8dWH7D8JbrVmRrnltrcOz9vpXBC8PTNkXAY"
+              iconUrl="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='2' fill='white'/%3E%3C/svg%3E"
               name=""
-              title="UX/UI · Web Design & Dev"
+              title="PM · UX/UI · Web Design"
               handle="ousachea"
               status="Available for projects"
               contactText="Hire Me"
@@ -2137,10 +2137,7 @@ export default function Portfolio() {
                   textAlign: 'left',
                 }}
               >
-                I'm a user-centered designer with a passion for creating
-                user-friendly and accessible digital experiences. I believe the
-                best designs are built with the user in mind — and I use a
-                variety of research methods to make sure of it.
+                I'm a digital product manager and UX/UI designer who leads projects from discovery to delivery. I keep teams aligned, scopes tight, and the end experience user-centred — across design, development, and launch.
               </p>
               <p
                 style={{
@@ -2153,9 +2150,7 @@ export default function Portfolio() {
               >
                 Based in{' '}
                 <strong style={{ color: '#ccc' }}>Phnom Penh, Cambodia</strong>,
-                I've spent 8+ years working across banking, NGOs, and
-                hospitality — bridging the gap between structured execution and
-                beautiful design.
+                I've spent 8+ years managing and shipping digital products across banking, NGOs, and hospitality — owning the full lifecycle from stakeholder alignment and sprint planning through to design, dev, and go-live.
               </p>
               <div
                 style={{

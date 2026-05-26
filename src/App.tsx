@@ -1685,68 +1685,76 @@ function Marquee({ items }) {
 function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ borderBottom: '1px solid #1a1030', overflow: 'hidden' }}>
-      <button
-        onClick={() => setOpen((o) => !o)}
-        style={{
-          width: '100%',
-          background: 'none',
-          border: 'none',
-          padding: '20px 0',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 16,
-          textAlign: 'left',
-        }}
-      >
-        <span
+    <BorderGlow
+      glowColor="270 70 75"
+      colors={['#c084fc', '#818cf8', '#6366f1']}
+      borderRadius={14}
+      glowRadius={36}
+      glowIntensity={1.0}
+    >
+      <div style={{ overflow: 'hidden' }}>
+        <button
+          onClick={() => setOpen((o) => !o)}
           style={{
-            fontSize: 15,
-            fontWeight: 600,
-            color: '#e8e8e8',
-            textAlign: 'left',
-            flex: 1,
-          }}
-        >
-          {q}
-        </span>
-        <span
-          style={{
-            fontSize: 18,
-            color: ACCENT,
-            flexShrink: 0,
-            transition: 'transform .25s',
-            display: 'inline-block',
-            transform: open ? 'rotate(45deg)' : 'none',
-            lineHeight: 1,
-          }}
-        >
-          +
-        </span>
-      </button>
-      <div
-        style={{
-          maxHeight: open ? 200 : 0,
-          overflow: 'hidden',
-          transition: 'max-height .35s ease',
-        }}
-      >
-        <p
-          style={{
-            fontSize: 14,
-            color: '#777',
-            lineHeight: 1.75,
-            margin: '0 0 20px',
-            paddingRight: 32,
+            width: '100%',
+            background: 'none',
+            border: 'none',
+            padding: '18px 22px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 16,
             textAlign: 'left',
           }}
         >
-          {a}
-        </p>
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: '#e8e8e8',
+              textAlign: 'left',
+              flex: 1,
+            }}
+          >
+            {q}
+          </span>
+          <span
+            style={{
+              fontSize: 18,
+              color: ACCENT,
+              flexShrink: 0,
+              transition: 'transform .25s',
+              display: 'inline-block',
+              transform: open ? 'rotate(45deg)' : 'none',
+              lineHeight: 1,
+            }}
+          >
+            +
+          </span>
+        </button>
+        <div
+          style={{
+            maxHeight: open ? 300 : 0,
+            overflow: 'hidden',
+            transition: 'max-height .35s ease',
+          }}
+        >
+          <p
+            style={{
+              fontSize: 14,
+              color: '#777',
+              lineHeight: 1.75,
+              margin: '0',
+              padding: '0 22px 18px',
+              textAlign: 'left',
+            }}
+          >
+            {a}
+          </p>
+        </div>
       </div>
-    </div>
+    </BorderGlow>
   );
 }
 
@@ -3210,7 +3218,7 @@ export default function Portfolio() {
                 Everything you need to know before we start working together.
               </p>
             </div>
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {FAQS.map((f, i) => (
                 <FaqItem key={i} q={f.q} a={f.a} />
               ))}

@@ -432,7 +432,9 @@ function CardNav({
       <nav
         ref={navRef}
         style={{
-          background: '#0d0b18',
+          background: 'rgba(13,11,24,0.72)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
           border: '.5px solid rgba(139,92,246,0.25)',
           borderRadius: 14,
           boxShadow: '0 4px 32px rgba(0,0,0,.5)',
@@ -1625,11 +1627,17 @@ export default function Portfolio() {
     color: '#e8e8e8',
     fontSize: 14,
     outline: 'none',
-    transition: 'border-color .2s',
+    transition: 'border-color .2s, box-shadow .2s',
     width: '100%',
   };
-  const onFocus = (e) => (e.target.style.borderColor = ACCENT + '66');
-  const onBlur = (e) => (e.target.style.borderColor = '#1a1030');
+  const onFocus = (e) => {
+    e.target.style.borderColor = ACCENT + '88';
+    e.target.style.boxShadow = `0 0 0 3px ${ACCENT}22, 0 0 16px ${ACCENT}22`;
+  };
+  const onBlur = (e) => {
+    e.target.style.borderColor = '#1a1030';
+    e.target.style.boxShadow = 'none';
+  };
 
   return (
     <div
@@ -2173,64 +2181,69 @@ export default function Portfolio() {
                   icon: '🏦',
                   title: 'Digital Banking',
                   desc: 'Mobile Banking rollouts at Canadia Bank — from design to go-live.',
-                  border: `1px solid ${ACCENT}44`,
+                  glowColor: '270 70 75',
+                  colors: ['#c084fc', '#818cf8', '#6366f1'],
                 },
                 {
                   icon: '🌐',
                   title: 'Webflow Expert',
                   desc: '95% certified. Built sites for UNDP, GIZ & ILO.',
-                  border: '1px solid #6366f144',
+                  glowColor: '239 68 68',
+                  colors: ['#818cf8', '#6366f1', '#c084fc'],
                 },
                 {
                   icon: '📐',
                   title: 'UX Strategy',
                   desc: 'Research, wireframes & user testing across 3 industries.',
-                  border: '1px solid #a855f744',
+                  glowColor: '285 70 70',
+                  colors: ['#e879f9', '#c084fc', '#818cf8'],
                 },
                 {
                   icon: '🚀',
                   title: 'Agile PM',
                   desc: 'Zero scope creep. On-time delivery. Stakeholder NPS 9/10.',
-                  border: '1px solid #38bdf844',
+                  glowColor: '200 80 65',
+                  colors: ['#38bdf8', '#818cf8', '#c084fc'],
                 },
-              ].map(({ icon, title, desc, border }) => (
-                <div
+              ].map(({ icon, title, desc, glowColor, colors }) => (
+                <BorderGlow
                   key={title}
-                  style={{
-                    padding: '20px',
-                    borderRadius: 14,
-                    border,
-                    background: '#0f0c1e',
-                  }}
+                  glowColor={glowColor}
+                  colors={colors}
+                  borderRadius={14}
+                  glowRadius={32}
+                  glowIntensity={1.1}
                 >
-                  <span
-                    style={{ fontSize: 24, display: 'block', marginBottom: 8 }}
-                  >
-                    {icon}
-                  </span>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: '#e8e8e8',
-                      margin: '0 0 4px',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {title}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: '#555',
-                      lineHeight: 1.5,
-                      margin: 0,
-                      textAlign: 'left',
-                    }}
-                  >
-                    {desc}
-                  </p>
-                </div>
+                  <div style={{ padding: '20px' }}>
+                    <span
+                      style={{ fontSize: 24, display: 'block', marginBottom: 8 }}
+                    >
+                      {icon}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: '#e8e8e8',
+                        margin: '0 0 4px',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {title}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: '#555',
+                        lineHeight: 1.5,
+                        margin: 0,
+                        textAlign: 'left',
+                      }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                </BorderGlow>
               ))}
             </div>
           </div>
@@ -2441,16 +2454,15 @@ export default function Portfolio() {
           </p>
           <div className="process-grid">
             {PROCESS.map((step, i) => (
-              <div key={step.num} style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    padding: '24px',
-                    borderRadius: 14,
-                    border: '1px solid #1a1030',
-                    background: '#06050e',
-                    height: '100%',
-                  }}
-                >
+              <BorderGlow
+                key={step.num}
+                glowColor="270 70 75"
+                colors={['#c084fc', '#818cf8', '#6366f1']}
+                borderRadius={14}
+                glowRadius={32}
+                glowIntensity={1.0}
+              >
+                <div style={{ padding: '24px' }}>
                   <div
                     style={{
                       display: 'flex',
@@ -2497,7 +2509,7 @@ export default function Portfolio() {
                     {step.desc}
                   </p>
                 </div>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         </Inner>
@@ -3133,43 +3145,48 @@ export default function Portfolio() {
                     value: 'Phnom Penh, Cambodia',
                   },
                 ].map(({ icon, label, value }) => (
-                  <div
+                  <BorderGlow
                     key={label}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: '16px',
-                      borderRadius: 12,
-                      border: '1px solid #1a1030',
-                      background: '#06050e',
-                    }}
+                    glowColor="270 70 75"
+                    colors={['#c084fc', '#818cf8', '#6366f1']}
+                    borderRadius={12}
+                    glowRadius={28}
+                    glowIntensity={1.0}
                   >
-                    <span style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
-                    <div>
-                      <p
-                        style={{
-                          fontSize: 11,
-                          color: '#444',
-                          fontFamily: "'DM Mono',monospace",
-                          margin: '0 0 2px',
-                          textAlign: 'left',
-                        }}
-                      >
-                        {label}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: 14,
-                          color: '#ccc',
-                          margin: 0,
-                          textAlign: 'left',
-                        }}
-                      >
-                        {value}
-                      </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        padding: '16px',
+                      }}
+                    >
+                      <span style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
+                      <div>
+                        <p
+                          style={{
+                            fontSize: 11,
+                            color: '#444',
+                            fontFamily: "'DM Mono',monospace",
+                            margin: '0 0 2px',
+                            textAlign: 'left',
+                          }}
+                        >
+                          {label}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: 14,
+                            color: '#ccc',
+                            margin: 0,
+                            textAlign: 'left',
+                          }}
+                        >
+                          {value}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </BorderGlow>
                 ))}
               </div>
               {/* Certifications */}

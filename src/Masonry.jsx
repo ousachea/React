@@ -48,31 +48,25 @@ const Masonry = ({
   );
 
   const [containerRef, { width }] = useMeasure();
-  const [imagesReady, setImagesReady] = useState(false);
-  const [imageDims, setImageDims] = useState({});
+  // Start ready with 4:3 fallback so grid renders immediately
+  const [imageDims, setImageDims] = useState(() => {
+    const d = {};
+    items.forEach(item => { d[item.id] = { w: 4, h: 3 }; });
+    return d;
+  });
+  const imagesReady = true;
 
-  // Preload images and capture natural dimensions
+  // Update dims as each image loads — grid reflows naturally
   useEffect(() => {
-    setImagesReady(false);
-    const dims = {};
-    Promise.all(
-      items.map(item =>
-        new Promise(resolve => {
-          const img = new Image();
-          img.src = item.img;
-          img.onload = () => {
-            dims[item.id] = { w: img.naturalWidth, h: img.naturalHeight };
-            resolve();
-          };
-          img.onerror = () => {
-            dims[item.id] = { w: 4, h: 3 };
-            resolve();
-          };
-        })
-      )
-    ).then(() => {
-      setImageDims(dims);
-      setImagesReady(true);
+    items.forEach(item => {
+      const img = new Image();
+      img.src = item.img;
+      img.onload = () => {
+        setImageDims(prev => ({
+          ...prev,
+          [item.id]: { w: img.naturalWidth, h: img.naturalHeight },
+        }));
+      };
     });
   }, [items]);
 
@@ -95,7 +89,7 @@ const Masonry = ({
   };
 
   const grid = useMemo(() => {
-    if (!width || !Object.keys(imageDims).length) return [];
+    if (!width) return [];
 
     const colHeights = new Array(columns).fill(0);
     const columnWidth = (width - GAP * (columns - 1)) / columns;

@@ -1,6 +1,7 @@
 .masonry-list {
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .masonry-item-wrapper {

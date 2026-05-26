@@ -98,7 +98,10 @@ const Masonry = ({
       const col = colHeights.indexOf(Math.min(...colHeights));
       const x = col * (columnWidth + GAP);
       const dims = imageDims[child.id] || { w: 4, h: 3 };
-      const height = columnWidth * (dims.h / dims.w);
+      // cap height: single-column gets 4:3 max, multi-column gets natural ratio up to 2:1
+      const maxRatio = columns === 1 ? 4 / 3 : 2;
+      const ratio = Math.min(dims.h / dims.w, maxRatio);
+      const height = columnWidth * ratio;
       const y = colHeights[col];
       colHeights[col] += height + GAP;
       return { ...child, x, y, w: columnWidth, h: height };

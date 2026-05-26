@@ -8,6 +8,7 @@ import React, {
 import gsap from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useInView, useMotionValue, useSpring } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import ProfileCard from './ProfileCard';
 import Masonry from './Masonry';
 
@@ -1323,24 +1324,30 @@ const FAQS = [
 
 const ARTICLES = [
   {
+    slug: 'canadia-bank-mobile-banking-v3-vs-v5',
     title: 'Canadia Bank Mobile Banking v3 vs v5',
     subtitle:
       'From Strong Roots to Smarter Experiences: A UX/UI and Product Execution Perspective',
     tag: 'Case Study',
     read: '8 min read',
+    date: 'May 2025',
   },
   {
+    slug: 'waterfall-vs-agile',
     title: 'Waterfall vs Agile',
     subtitle: 'Which project management methodology is right for your team?',
-    tag: 'PM',
+    tag: 'Project Management',
     read: '5 min read',
+    date: 'Apr 2025',
   },
   {
+    slug: 'gestalt-principles-ux-designers',
     title: 'Gestalt Principles for UX Designers',
     subtitle:
       'How psychological laws shape effective, user-friendly digital interfaces.',
     tag: 'UX Design',
     read: '6 min read',
+    date: 'Mar 2025',
   },
 ];
 
@@ -1812,6 +1819,7 @@ const GLOBAL_CSS = `
    Portfolio
 ───────────────────────────────────────────────────────────────────────────── */
 export default function Portfolio() {
+  const navigate = useNavigate();
   const [openCase, setOpenCase] = useState(null);
   const [tSlide, setTSlide] = useState(0);
   const [sent, setSent] = useState(false);
@@ -3250,7 +3258,7 @@ export default function Portfolio() {
                 glowRadius={32}
                 glowIntensity={1.0}
               >
-                <div style={{ padding: '28px', cursor: 'pointer' }}>
+                <div style={{ padding: '28px', cursor: 'pointer' }} onClick={() => navigate(`/articles/${a.slug}`)}>
                   <div
                     style={{
                       display: 'flex',

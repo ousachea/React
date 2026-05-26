@@ -9,6 +9,7 @@ import gsap from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useInView, useMotionValue, useSpring } from 'motion/react';
 import ProfileCard from './ProfileCard';
+import Masonry from './Masonry';
 
 gsap.registerPlugin(InertiaPlugin);
 
@@ -930,76 +931,304 @@ const PROJECTS = [
     title: 'Canadia Bank V5',
     tag: 'Web Design · Development',
     url: 'https://new-cnb.webflow.io/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67e0bf9e13613ecd0814bcf7_Canadia%20Bank%20App.png',
     desc: "Led the Webflow development and UX/UI design for Canadia Bank's V5 website — a modern, responsive platform aligned with the bank's brand identity.",
     caseStudy: {
-      problem:
-        "The existing site felt dated and didn't reflect the bank's digital ambitions. Navigation was complex and mobile experience was inconsistent.",
-      process:
-        'Conducted stakeholder workshops, redesigned the IA, created high-fidelity prototypes in Figma, and developed the full site in Webflow.',
-      result:
-        'Launched on schedule with significantly improved UX scores and positive stakeholder feedback across all departments.',
+      problem: "The previous website was outdated, difficult to navigate, and lacked mobile responsiveness. Customers struggled to find essential banking information, leading to increased support inquiries.",
+      process: "Conducted a UX audit to identify pain points, redesigned the IA, created high-fidelity prototypes in Figma, then developed a clean, structured layout in Webflow optimised for desktop and mobile.",
+      result: "Launched with a 30% increase in user engagement, 25% lower bounce rate, 40% drop in support inquiries, and 40% faster load times within the first three months.",
     },
-    accent: '#8B5CF6',
-    glowColor: '270 70 75',
-    colors: ['#c084fc', '#818cf8', '#38bdf8'],
-    icon: '🏦',
+    accent: '#f87171',
+    glowColor: '0 75 62',
+    colors: ['#f87171', '#c084fc', '#818cf8'],
   },
   {
     id: 2,
     title: 'UNDP Digital Strategy',
     tag: 'Web Design · Development',
     url: 'https://digitalstrategy.undp.org/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38a948a714bcbc3c35934_UNDP%20-%20Digital%20Strategy%202022-2025.png',
     desc: "Led the full design and development of UNDP's Digital Strategy microsite — clean, responsive, and accessible across devices.",
     caseStudy: {
-      problem:
-        'UNDP needed a microsite to present their digital strategy clearly to a global audience across devices and connection speeds.',
-      process:
-        "Designed the full layout in Figma, aligned with UNDP's global brand guidelines, then developed and optimised in Webflow.",
-      result:
-        "Delivered a high-performance, accessible microsite that met UNDP's brand and accessibility standards.",
+      problem: "UNDP needed a microsite to present their digital strategy clearly to a global audience across varying devices and connection speeds.",
+      process: "Designed the full layout in Figma aligned with UNDP's global brand guidelines, then developed and optimised the site in Webflow for performance and accessibility.",
+      result: "Delivered a high-performance, accessible microsite that met UNDP's brand and accessibility standards and reached a global audience.",
     },
-    accent: '#6366F1',
-    glowColor: '239 68 68',
-    colors: ['#818cf8', '#6366f1', '#c084fc'],
-    icon: '🌐',
+    accent: '#38bdf8',
+    glowColor: '207 65 52',
+    colors: ['#38bdf8', '#818cf8', '#6366f1'],
   },
   {
     id: 3,
     title: 'UNDP DigitalX',
     tag: 'Web Design · Development',
     url: 'https://digitalx.undp.org/index.html',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f394beabd9f040078e274f_Digital%20X.png',
     desc: 'Designed and developed DigitalX — a UNDP initiative showcasing innovative digital transformation solutions with interactive elements.',
     caseStudy: {
-      problem:
-        'The initiative needed a visually engaging platform that could communicate complex digital topics to a diverse global audience.',
-      process:
-        'Created the visual design system, built interactive components, and optimised for performance and accessibility.',
-      result:
-        'Successfully launched with smooth navigation and strong engagement metrics from the global user base.',
+      problem: "The initiative needed a visually engaging platform that could communicate complex digital topics to a diverse global audience.",
+      process: "Created the visual design system, built interactive components, and optimised for performance and accessibility across all devices.",
+      result: "Successfully launched with smooth navigation and strong engagement metrics from the global user base.",
     },
-    accent: '#A855F7',
-    glowColor: '285 70 70',
-    colors: ['#e879f9', '#c084fc', '#818cf8'],
-    icon: '✦',
+    accent: '#38bdf8',
+    glowColor: '205 55 50',
+    colors: ['#38bdf8', '#6366f1', '#c084fc'],
   },
   {
     id: 4,
     title: 'Edge & Story',
     tag: 'Web Design · Development',
     url: 'https://www.edgeandstory.com/',
-    desc: 'Redesigned and developed the website for edgeandstory — a consultancy in arts, culture, and sustainable development.',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67e0cdb441031a9384a53166_edgeandstory%20_%20impact%20for%20culture%20and%20development.png',
+    desc: "Redesigned and developed the website for edgeandstory — a consultancy in arts, culture, and sustainable development — creating a modern, user-friendly experience that effectively communicates their mission.",
     caseStudy: {
-      problem:
-        "The old site didn't communicate the consultancy's expertise or mission effectively, with poor information hierarchy.",
-      process:
-        'Redesigned the IA and visual design, focused on portfolio-forward layout and clear communication of services.',
-      result:
-        'Modern, user-friendly experience that enhances accessibility and effectively communicates their mission.',
+      problem: "The old site didn't communicate the consultancy's expertise or mission effectively, with poor information hierarchy and an outdated visual language.",
+      process: "Redesigned the IA and visual design, focused on a portfolio-forward layout and clear communication of evaluation, research, and strategy services.",
+      result: "Modern, accessible platform that effectively communicates their mission and received positive feedback from stakeholders.",
     },
-    accent: '#7C3AED',
-    glowColor: '258 80 65',
-    colors: ['#7c3aed', '#a78bfa', '#6366f1'],
-    icon: '🎨',
+    accent: '#a78bfa',
+    glowColor: '270 70 75',
+    colors: ['#c084fc', '#a78bfa', '#6366f1'],
+  },
+  {
+    id: 5,
+    title: 'Bright Consulting Limited',
+    tag: 'Web Design · Development',
+    url: 'https://www.bright.edu.vn/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38c169dc229f94cd6f660_Bright%20Consulting%20Limited%20(1).png',
+    desc: "Designed and developed the website for Bright Consulting Limited, an education consulting firm in Vietnam. Focused on a professional, trustworthy design language and clear content structure.",
+    caseStudy: {
+      problem: "The firm needed a credible online presence that could clearly showcase their services and student success stories to a Vietnamese and international audience.",
+      process: "Designed in Figma with a clean, professional visual language, then developed in Webflow with structured content and intuitive navigation.",
+      result: "Delivered a polished, mobile-optimised site that improved their brand credibility and streamlined lead generation.",
+    },
+    accent: '#34d399',
+    glowColor: '160 70 45',
+    colors: ['#34d399', '#10b981', '#38bdf8'],
+  },
+  {
+    id: 6,
+    title: 'CASIC Cambodia',
+    tag: 'Web Design · Development',
+    url: 'https://www.casiccambodia.net/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f392146a2ff432016a333e_CASIC%20-%20Home.png',
+    desc: "Developed a clean, responsive website for CASIC Cambodia, a leading infrastructure and development company. Focused on performance, mobile optimisation, and a scalable CMS.",
+    caseStudy: {
+      problem: "CASIC needed a corporate site that reflected their scale and credibility while being easy to maintain internally as their project portfolio grew.",
+      process: "Built a structured Webflow site with a scalable CMS, optimised for performance and mobile, with a clear information hierarchy for their services and projects.",
+      result: "Launched a fast, maintainable site that supports ongoing content updates with ease and strengthened their digital presence.",
+    },
+    accent: '#34d399',
+    glowColor: '150 70 42',
+    colors: ['#34d399', '#818cf8', '#10b981'],
+  },
+  {
+    id: 7,
+    title: 'Data to Policy',
+    tag: 'Web Design · Development',
+    url: 'https://www.datatopolicy.org/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f3944c8f607e1fafd5ea89_Data%20to%20Policy%20Navigator.png',
+    desc: "Worked on the design, development, and content creation for Data to Policy — a project transforming data into actionable policy insights with an intuitive layout and clear information architecture.",
+    caseStudy: {
+      problem: "The platform needed to present complex data and policy content in an accessible, digestible format for a diverse global audience of policymakers and researchers.",
+      process: "Designed a streamlined layout in Figma with strong typographic hierarchy, then developed in Webflow with integrated CMS tools for ongoing content management.",
+      result: "Delivered a clear, navigable platform that effectively bridges data and policy for its global user base.",
+    },
+    accent: '#fb923c',
+    glowColor: '15 80 68',
+    colors: ['#fb923c', '#f97316', '#c084fc'],
+  },
+  {
+    id: 8,
+    title: 'Eleven Degrees',
+    tag: 'Web Design · Development',
+    url: 'https://www.elevendegrees.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f3907006920d025d28bac2_Eleven%20Degrees_%20Where%20Beer%20Brings%20Us%20Together.png',
+    desc: "Crafted a clean and professional digital presence for Eleven Degrees. Focused on visual hierarchy, minimal aesthetics, and a portfolio-forward layout to showcase their work.",
+    caseStudy: {
+      problem: "The brand needed a digital presence that matched their refined aesthetic and communicated their unique offering clearly to both local and international audiences.",
+      process: "Designed a minimal, image-led layout in Figma, then built in Webflow with smooth transitions and optimised asset loading.",
+      result: "Launched a polished site that elevated the brand's online presence and improved audience engagement.",
+    },
+    accent: '#a78bfa',
+    glowColor: '270 70 75',
+    colors: ['#c084fc', '#818cf8', '#6366f1'],
+  },
+  {
+    id: 9,
+    title: 'Fingertip',
+    tag: 'Web Design · Development',
+    url: 'https://www.getfingertip.io/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38d6c6056abc25bd6dd64_FINGERTIP%20_%20Supply%20Chain%20Management%20Software.png',
+    desc: "Developed Fingertip's marketing site — a platform for personalised digital business cards. Delivered a polished, responsive, performance-optimised site based on provided designs.",
+    caseStudy: {
+      problem: "Fingertip needed a high-converting marketing site that communicated their product value clearly and drove sign-ups in a competitive SaaS market.",
+      process: "Developed pixel-perfectly from provided Figma designs in Webflow, focusing on performance, responsiveness, and smooth interactions.",
+      result: "Delivered on schedule with excellent performance scores and a clean, conversion-focused experience.",
+    },
+    accent: '#fb923c',
+    glowColor: '28 82 65',
+    colors: ['#fb923c', '#fbbf24', '#c084fc'],
+  },
+  {
+    id: 10,
+    title: 'GIA Tower',
+    tag: 'Web Design · Development',
+    url: 'https://www.gia-tower.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38a9d4d23ea6d10ec08bd_GIA%20Tower%20-%20Book%20Premium%20Office%20Space%20in%20Koh%20Pich.png',
+    desc: "Developed the official website for GIA Tower, a luxury mixed-use development in Phnom Penh — a high-impact online presence showcasing the tower's premium offerings.",
+    caseStudy: {
+      problem: "The development needed a premium digital presence that conveyed the tower's luxury positioning and drove enquiries from high-value commercial tenants and investors.",
+      process: "Built a high-impact Webflow site with strong visual storytelling, structured content for each offering, and optimised asset delivery.",
+      result: "Delivered a striking, fast-loading site that effectively communicated the project's premium value to prospective tenants and investors.",
+    },
+    accent: '#fbbf24',
+    glowColor: '45 68 65',
+    colors: ['#fbbf24', '#f59e0b', '#c084fc'],
+  },
+  {
+    id: 11,
+    title: 'Hotel KVL',
+    tag: 'Web Design · Development',
+    url: 'https://www.hotelkvlgroup.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38d2cbb1000f0b93f03f6_Hotel%20KVL%20Phnom%20Penh%20_%20Designed%20to%20connect.png',
+    desc: "Designed and developed the corporate site for Hotel KVL Group. Delivered a brand-consistent site and conducted CMS training for the internal team.",
+    caseStudy: {
+      problem: "The hotel group needed a single corporate site that represented multiple properties consistently and could be managed internally without developer dependency.",
+      process: "Designed a clean, brand-aligned layout in Figma, developed in Webflow with a structured CMS, and conducted a training session for the internal content team.",
+      result: "The team can now manage all content independently, and the site provides a consistent, professional experience across all properties.",
+    },
+    accent: '#fbbf24',
+    glowColor: '38 45 50',
+    colors: ['#fbbf24', '#c084fc', '#818cf8'],
+  },
+  {
+    id: 12,
+    title: 'Multiple Natures',
+    tag: 'Web Design · Development',
+    url: 'https://www.multiplenatures.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38ab58a714bcbc3c38645_Know%20more%20about%20Multiple%20Natures.png',
+    desc: "Handled the development and ongoing maintenance of Multiple Natures' website — focused on stability, performance, and routine updates for their global network.",
+    caseStudy: {
+      problem: "The organisation needed a reliable, well-maintained web presence that could support their growing global network without technical disruptions.",
+      process: "Took ownership of the Webflow site, implemented performance improvements, and managed ongoing content updates and maintenance cycles.",
+      result: "Sustained a stable, performant site that supports Multiple Natures' global operations with minimal downtime.",
+    },
+    accent: '#38bdf8',
+    glowColor: '214 80 42',
+    colors: ['#38bdf8', '#6366f1', '#818cf8'],
+  },
+  {
+    id: 13,
+    title: 'OCIC Group',
+    tag: 'Web Design · Development',
+    url: 'https://www.ocic.com.kh/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38a6205670d6f3ac30386_OCIC%20Group%20-%20Building%20Opportunities.png',
+    desc: "Built and maintained OCIC's corporate website with multilingual support (Khmer, English, Chinese) — a structured, scalable solution for a leading Cambodian conglomerate.",
+    caseStudy: {
+      problem: "OCIC needed a multilingual corporate site that could serve Khmer, English, and Chinese audiences while remaining easy to maintain as their portfolio expanded.",
+      process: "Built a scalable Webflow site with structured multilingual CMS, optimised information architecture, and consistent branding across all language versions.",
+      result: "Delivered a robust trilingual platform that simplified content management and strengthened OCIC's corporate digital presence.",
+    },
+    accent: '#f87171',
+    glowColor: '1 45 52',
+    colors: ['#f87171', '#c084fc', '#818cf8'],
+  },
+  {
+    id: 14,
+    title: 'Photo Phnom Penh',
+    tag: 'Web Design · Development',
+    url: 'https://www.photophnompenh.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67e0d0393bf3647ff18d9364_Photo%20Phnom%20Penh%20Association%20(PPPA).png',
+    desc: "Designed the digital presence for Photo Phnom Penh Association — a nonprofit empowering young Cambodian photographers through skills, training, and global networking.",
+    caseStudy: {
+      problem: "The association needed a platform to showcase their photography events, connect with international partners, and provide free access to art resources for youth.",
+      process: "Designed and developed a visually rich site that highlighted the photographers' work, event programming, and organisational mission.",
+      result: "Launched a compelling platform that supported their annual festival and helped build their international network of artists and co-partners.",
+    },
+    accent: '#f472b6',
+    glowColor: '340 75 58',
+    colors: ['#f472b6', '#c084fc', '#818cf8'],
+  },
+  {
+    id: 15,
+    title: 'Residence 110',
+    tag: 'Webflow Build',
+    url: 'https://www.residence110.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67e0d046d20dc31d2330a12d_Residence%20110%20Hotel%20and%20Apartment.png',
+    desc: "Designed and built the website for Residence 110 — a boutique hotel in the heart of Phnom Penh's entertainment district — featuring online booking and rich property imagery.",
+    caseStudy: {
+      problem: "The hotel wanted an elegant online presence to showcase their property, establish brand credibility, and allow guests to book rooms directly online.",
+      process: "Designed a layout featuring beautiful property imagery and a seamless booking form. Wrote compelling, SEO-optimised content and built the site in Webflow for easy self-management.",
+      result: "Delivered a stunning, self-manageable site that drove direct bookings and positioned the hotel effectively in a competitive market.",
+    },
+    accent: '#fbbf24',
+    glowColor: '42 72 52',
+    colors: ['#fbbf24', '#f59e0b', '#c084fc'],
+  },
+  {
+    id: 16,
+    title: 'Richreay Group',
+    tag: 'Design & Webflow Build',
+    url: 'https://www.richreay.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67e0d05741031a9384a75e3e_RichReay.png',
+    desc: "Designed and developed the bilingual (English/Khmer) website for Richreay Group — a collection of Cambodian restaurants delivering unique food and beverage experiences.",
+    caseStudy: {
+      problem: "The group needed a bilingual website to showcase their restaurants, establish an online presence, and provide information to both local and international visitors.",
+      process: "Designed a rich, food-forward layout with strong brand imagery, then built a bilingual Webflow site with seamless language switching between English and Khmer.",
+      result: "Launched a vibrant, accessible site that effectively represents all Richreay restaurants and supports their growth in the Cambodian F&B sector.",
+    },
+    accent: '#fb923c',
+    glowColor: '24 80 60',
+    colors: ['#fb923c', '#fbbf24', '#c084fc'],
+  },
+  {
+    id: 17,
+    title: 'UN Innovation Network',
+    tag: 'Web Design · Development',
+    url: 'https://www.uninnovation.network/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f3947aa4f35e5305cee4aa_UN%20Innovation%20Network.png',
+    desc: "Designed and developed the website for the UN Innovation Network — a user-centric platform fostering global collaboration in innovation across the UN system.",
+    caseStudy: {
+      problem: "The network needed a central platform to connect innovators across the UN system, making it easy to discover initiatives, share knowledge, and collaborate globally.",
+      process: "Designed a clean, user-focused information architecture in Figma aligned with UN brand standards, then developed in Webflow with performance and accessibility in mind.",
+      result: "Delivered a high-performance, accessible platform that strengthened collaboration across the global UN innovation community.",
+    },
+    accent: '#a78bfa',
+    glowColor: '270 70 75',
+    colors: ['#c084fc', '#818cf8', '#38bdf8'],
+  },
+  {
+    id: 18,
+    title: 'Vertical Fitness Center',
+    tag: 'Web Design · Development',
+    url: 'https://www.verticalfitnesscenter.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f390df947635c68329d1cc_Vertical%20Fitness%20-%20Vattanac%20Property.png',
+    desc: "Designed and developed a dynamic website for Vertical Fitness Center. Prioritised UX, responsiveness, and bold visuals to reflect the brand's active lifestyle.",
+    caseStudy: {
+      problem: "The fitness center needed an energetic online presence that communicated their services and brand personality while driving membership enquiries.",
+      process: "Designed a bold, visually driven layout in Figma with strong CTAs, then built in Webflow with optimised performance and mobile-first responsiveness.",
+      result: "Launched a dynamic site that captured the brand's energy and drove an increase in membership enquiries.",
+    },
+    accent: '#2dd4bf',
+    glowColor: '183 50 58',
+    colors: ['#2dd4bf', '#38bdf8', '#818cf8'],
+  },
+  {
+    id: 19,
+    title: 're:edge Architecture',
+    tag: 'Web Design · Development',
+    url: 'https://www.reedgearchitecture.com/',
+    image: 'https://cdn.prod.website-files.com/67e0bf9e13613ecd0814bc70/67f38a8a1b5f07467142a2d9_Principles.png',
+    desc: "Developed a visually engaging, responsive website for re:edge Architecture — showcasing their architectural projects with an emphasis on sleek animations and performance.",
+    caseStudy: {
+      problem: "The architecture firm needed a portfolio site that let their work speak for itself — minimal, refined, and fast — without overshadowing the projects.",
+      process: "Developed pixel-perfectly from provided designs in Webflow, implementing smooth scroll animations and optimising all assets for fast load times.",
+      result: "Delivered an elegant, high-performance portfolio site that earned strong client and industry praise.",
+    },
+    accent: '#a78bfa',
+    glowColor: '270 60 70',
+    colors: ['#a78bfa', '#c084fc', '#818cf8'],
   },
 ];
 
@@ -1247,119 +1476,137 @@ function SkillBar({ name, level, delay }) {
   );
 }
 
-function ExperienceList({ items }) {
+function ExperienceItem({ e, i, isLast }) {
+  const ref = useRef(null);
+  const [cardVis, setCardVis] = useState(false);
+  const [centered, setCentered] = useState(false);
+
+  // one-time: fade card in when it first enters the viewport
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setCardVis(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // persistent: glow dot when card is in the centre 30% of the viewport
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setCentered(entry.isIntersecting),
+      { rootMargin: '-35% 0px -35% 0px', threshold: 0 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 1,
-          background: `linear-gradient(${ACCENT}44,transparent)`,
-        }}
-      />
-      {items.map((e, i) => (
-        <div
-          key={i}
-          style={{ paddingLeft: 32, marginBottom: 40, position: 'relative' }}
+    <div ref={ref} style={{ display: 'flex', gap: 20, alignItems: 'stretch' }}>
+
+      {/* ── Timeline column ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 20 }}>
+        {/* dot */}
+        <div style={{
+          width: 12,
+          height: 12,
+          borderRadius: '50%',
+          border: `2px solid ${centered ? ACCENT : ACCENT + '44'}`,
+          background: centered ? ACCENT : 'transparent',
+          boxShadow: centered ? `0 0 12px ${ACCENT}cc, 0 0 28px ${ACCENT}55` : 'none',
+          flexShrink: 0,
+          marginTop: 26,
+          zIndex: 1,
+          transition: 'background .35s ease, box-shadow .35s ease, border-color .35s ease',
+        }} />
+        {/* line to next item */}
+        {!isLast && (
+          <div style={{
+            width: 1,
+            flex: 1,
+            marginTop: 6,
+            background: `linear-gradient(${ACCENT}55, ${ACCENT}11)`,
+            transformOrigin: 'top',
+            transform: cardVis ? 'scaleY(1)' : 'scaleY(0)',
+            transition: `transform .6s ease ${i * 70 + 420}ms`,
+          }} />
+        )}
+      </div>
+
+      {/* ── Card ── */}
+      <div style={{
+        flex: 1,
+        marginBottom: 16,
+        opacity: cardVis ? 1 : 0,
+        transform: cardVis ? 'translateX(0)' : 'translateX(20px)',
+        transition: `opacity .5s ease ${i * 70}ms, transform .5s ease ${i * 70}ms`,
+      }}>
+        <BorderGlow
+          glowColor="270 70 75"
+          colors={['#c084fc', '#818cf8', '#6366f1']}
+          borderRadius={14}
+          glowRadius={36}
+          glowIntensity={1.0}
         >
-          <div
-            style={{
-              position: 'absolute',
-              left: -5,
-              top: 4,
-              width: 10,
-              height: 10,
-              borderRadius: '50%',
-              background: ACCENT,
-              boxShadow: `0 0 12px ${ACCENT}88`,
-            }}
-          />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              marginBottom: 6,
-              flexWrap: 'wrap',
-              gap: 8,
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  letterSpacing: -0.3,
-                  color: '#e8e8e8',
-                  margin: '0 0 2px',
-                  textAlign: 'left',
-                }}
-              >
-                {e.role}
-              </h3>
-              <p
-                style={{
-                  fontSize: 13,
-                  color: ACCENT2,
-                  fontFamily: "'DM Mono',monospace",
-                  margin: '2px 0 0',
-                  textAlign: 'left',
-                }}
-              >
-                {e.company}
-              </p>
-              {e.location && (
-                <p
-                  style={{
-                    fontSize: 11,
-                    color: '#444',
-                    fontFamily: "'DM Mono',monospace",
-                    margin: '4px 0 0',
-                    textAlign: 'left',
-                  }}
-                >
-                  📍 {e.location}
-                </p>
-              )}
-            </div>
-            <span
-              style={{
+          <div style={{ padding: '24px 28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+              <div>
+                <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3, color: '#e8e8e8', margin: '0 0 4px', textAlign: 'left' }}>
+                  {e.role}
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 13, color: ACCENT2, fontFamily: "'DM Mono',monospace" }}>
+                    {e.company}
+                  </span>
+                  {e.location && (
+                    <>
+                      <span style={{ color: '#2a1f50', fontSize: 10 }}>·</span>
+                      <span style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace" }}>
+                        {e.location}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+              <span style={{
                 fontSize: 11,
                 fontFamily: "'DM Mono',monospace",
-                color: '#555',
-                border: '1px solid #1e1e1e',
-                padding: '4px 10px',
+                color: ACCENT,
+                background: '#8B5CF611',
+                border: `1px solid ${ACCENT}33`,
+                padding: '4px 12px',
                 borderRadius: 99,
                 whiteSpace: 'nowrap',
-              }}
-            >
-              {e.period}
-            </span>
+                flexShrink: 0,
+              }}>
+                {e.period}
+              </span>
+            </div>
+            <ul style={{ listStyle: 'none', margin: 0, paddingLeft: 0 }}>
+              {e.bullets.map((b, j) => (
+                <li key={j} style={{ fontSize: 13, color: '#666', lineHeight: 1.75, marginBottom: 4, paddingLeft: 16, position: 'relative' }}>
+                  <span style={{ position: 'absolute', left: 0, color: ACCENT }}>›</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul style={{ listStyle: 'none', marginTop: 8, paddingLeft: 0 }}>
-            {e.bullets.map((b, j) => (
-              <li
-                key={j}
-                style={{
-                  fontSize: 13,
-                  color: '#777',
-                  lineHeight: 1.7,
-                  marginBottom: 4,
-                  paddingLeft: 16,
-                  position: 'relative',
-                }}
-              >
-                <span style={{ position: 'absolute', left: 0, color: ACCENT }}>
-                  ›
-                </span>
-                {b}
-              </li>
-            ))}
-          </ul>
-        </div>
+        </BorderGlow>
+      </div>
+
+    </div>
+  );
+}
+
+function ExperienceList({ items }) {
+  return (
+    <div>
+      {items.map((e, i) => (
+        <ExperienceItem key={i} e={e} i={i} isLast={i === items.length - 1} />
       ))}
     </div>
   );
@@ -1525,7 +1772,9 @@ const GLOBAL_CSS = `
   @media(max-width:768px){.exp-grid{grid-template-columns:1fr;}}
   .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(40px,5vw,80px);}
   @media(max-width:640px){.skills-grid{grid-template-columns:1fr;}}
-  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(16px,2vw,28px);}
+  .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);}
+  @media(max-width:900px){.projects-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.projects-grid{grid-template-columns:1fr;}}
   .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(14px,1.5vw,24px);}
   .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(12px,1.5vw,20px);}
   .process-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:clamp(14px,1.5vw,24px);}
@@ -1552,7 +1801,7 @@ const GLOBAL_CSS = `
 
   /* ── Large screen (1440px+) ── */
   @media(min-width:1440px){
-    .projects-grid{grid-template-columns:repeat(2,1fr);}
+
     .services-grid{grid-template-columns:repeat(4,1fr);}
     .process-grid{grid-template-columns:repeat(5,1fr);}
     .articles-grid{grid-template-columns:repeat(3,1fr);}
@@ -1627,8 +1876,6 @@ export default function Portfolio() {
   };
 
   const activeProject = PROJECTS.find((p) => p.id === openCase);
-  const expLeft = EXPERIENCE.filter((_, i) => i % 2 === 0);
-  const expRight = EXPERIENCE.filter((_, i) => i % 2 !== 0);
 
   const inputStyle = {
     padding: '13px 16px',
@@ -2378,74 +2625,23 @@ export default function Portfolio() {
           >
             Hover to illuminate · Click to read the case study →
           </p>
-          <div className="projects-grid">
-            {PROJECTS.map((p) => (
-              <BorderGlow
-                key={p.id}
-                glowColor={p.glowColor}
-                colors={p.colors}
-                borderRadius={16}
-                glowRadius={44}
-                glowIntensity={1.3}
-                edgeSensitivity={20}
-              >
-                <div
-                  onClick={() => setOpenCase(p.id)}
-                  style={{ padding: 'clamp(20px,4vw,32px)', cursor: 'pointer' }}
-                >
-                  <span
-                    style={{ fontSize: 32, display: 'block', marginBottom: 16 }}
-                  >
-                    {p.icon}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontFamily: "'DM Mono',monospace",
-                      color: p.accent,
-                      letterSpacing: 1,
-                      display: 'block',
-                      margin: '0 0 8px',
-                    }}
-                  >
-                    {p.tag}
-                  </span>
-                  <h3
-                    style={{
-                      fontSize: 19,
-                      fontWeight: 600,
-                      letterSpacing: -0.5,
-                      color: '#e8e8e8',
-                      margin: '0 0 10px',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {p.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: '#666',
-                      lineHeight: 1.75,
-                      margin: '0 0 16px',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {p.desc}
-                  </p>
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: p.accent,
-                      fontFamily: "'DM Mono',monospace",
-                    }}
-                  >
-                    Read case study →
-                  </span>
-                </div>
-              </BorderGlow>
-            ))}
-          </div>
+          <Masonry
+            items={PROJECTS.map((p, i) => ({
+              id: String(p.id),
+              img: p.image,
+              url: p.url,
+              height: [800, 600, 700, 550, 750, 620, 680, 580, 720, 640][i % 10],
+            }))}
+            ease="power3.out"
+            duration={0.5}
+            stagger={0.04}
+            animateFrom="bottom"
+            scaleOnHover={true}
+            hoverScale={0.97}
+            blurToFocus={true}
+            colorShiftOnHover={false}
+            onItemClick={(item) => setOpenCase(Number(item.id))}
+          />
         </Inner>
       </Section>
 
@@ -2557,9 +2753,8 @@ export default function Portfolio() {
           >
             Work History
           </h2>
-          <div className="exp-grid">
-            <ExperienceList items={expLeft} />
-            <ExperienceList items={expRight} />
+          <div style={{ maxWidth: 680, margin: '0 auto' }}>
+            <ExperienceList items={EXPERIENCE} />
           </div>
           <h2
             style={{

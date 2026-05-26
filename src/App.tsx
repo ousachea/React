@@ -8,6 +8,7 @@ import React, {
 import gsap from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useInView, useMotionValue, useSpring } from 'motion/react';
+import ProfileCard from './ProfileCard';
 
 gsap.registerPlugin(InertiaPlugin);
 
@@ -1546,6 +1547,8 @@ const GLOBAL_CSS = `
   @media(max-width:480px){.hero-h1{letter-spacing:-2px;}}
   .hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
   @media(max-width:640px){section{padding:60px 0!important;}.modal-inner{padding:24px!important;}}
+  .hero-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(40px,5vw,80px);align-items:center;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}.hero-grid .pc-card-wrapper{display:none;}}
 
   /* ── Large screen (1440px+) ── */
   @media(min-width:1440px){
@@ -1874,147 +1877,168 @@ export default function Portfolio() {
           }}
         />
         <Inner style={{ position: 'relative', zIndex: 2, textAlign: 'left' }}>
-          <div style={{ maxWidth: 820 }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 20,
-                animation: 'fadeUp .6s ease both',
-              }}
-            >
-              <span
+          <div className="hero-grid">
+            {/* Left — text content */}
+            <div>
+              <div
                 style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#3DAB72',
-                  display: 'inline-block',
-                  boxShadow: '0 0 8px #3DAB72',
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "'DM Mono',monospace",
-                  fontSize: 12,
-                  color: '#3DAB72',
-                  letterSpacing: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  marginBottom: 20,
+                  animation: 'fadeUp .6s ease both',
                 }}
               >
-                Available for projects
-              </span>
-            </div>
-            <h1 className="hero-h1">
-              Chea
-              <br />
-              <span style={{ color: ACCENT }}>Ousa.</span>
-            </h1>
-            <p
-              style={{
-                fontSize: 'clamp(16px,2.2vw,22px)',
-                color: '#777',
-                fontWeight: 300,
-                maxWidth: 540,
-                lineHeight: 1.7,
-                margin: '0 0 12px',
-                textAlign: 'left',
-                animation: 'fadeUp .6s .15s ease both',
-              }}
-            >
-              UX/UI, Web Design & Development.
-            </p>
-            <p
-              style={{
-                fontSize: 'clamp(14px,1.6vw,17px)',
-                color: '#555',
-                fontWeight: 300,
-                maxWidth: 500,
-                lineHeight: 1.8,
-                margin: '0 0 36px',
-                textAlign: 'left',
-                animation: 'fadeUp .6s .2s ease both',
-              }}
-            >
-              Crafting seamless digital experiences — from design to
-              development.
-            </p>
-            <div
-              style={{
-                display: 'flex',
-                gap: 8,
-                marginBottom: 40,
-                flexWrap: 'wrap',
-                animation: 'fadeUp .6s .25s ease both',
-              }}
-            >
-              {['Phnom Penh, Cambodia', 'Web Design', 'UX/UI', 'Webflow'].map(
-                (tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontSize: 11,
-                      fontFamily: "'DM Mono',monospace",
-                      color: ACCENT2,
-                      border: `1px solid ${ACCENT}44`,
-                      padding: '4px 10px',
-                      borderRadius: 99,
-                      background: '#8B5CF611',
-                    }}
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-            </div>
-            <div
-              className="hero-btns"
-              style={{ animation: 'fadeUp .6s .3s ease both' }}
-            >
-              <button
-                onClick={() => scrollTo('Projects')}
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    background: '#3DAB72',
+                    display: 'inline-block',
+                    boxShadow: '0 0 8px #3DAB72',
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: "'DM Mono',monospace",
+                    fontSize: 12,
+                    color: '#3DAB72',
+                    letterSpacing: 1,
+                  }}
+                >
+                  Available for projects
+                </span>
+              </div>
+              <h1 className="hero-h1">
+                Chea
+                <br />
+                <span style={{ color: ACCENT }}>Ousa.</span>
+              </h1>
+              <p
                 style={{
-                  padding: '14px 32px',
-                  background: ACCENT,
-                  border: 'none',
-                  borderRadius: 8,
-                  color: '#fff',
-                  fontFamily: "'Sora',sans-serif",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'opacity .2s',
-                }}
-                onMouseEnter={(e) => (e.target.style.opacity = 0.85)}
-                onMouseLeave={(e) => (e.target.style.opacity = 1)}
-              >
-                View My Work
-              </button>
-              <button
-                onClick={() => scrollTo('Contact')}
-                style={{
-                  padding: '14px 32px',
-                  background: 'transparent',
-                  border: '1px solid #2a2040',
-                  borderRadius: 8,
-                  color: '#aaa',
-                  fontFamily: "'Sora',sans-serif",
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  transition: 'border-color .2s,color .2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = ACCENT;
-                  e.target.style.color = ACCENT;
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#2a2040';
-                  e.target.style.color = '#aaa';
+                  fontSize: 'clamp(16px,2.2vw,22px)',
+                  color: '#777',
+                  fontWeight: 300,
+                  maxWidth: 540,
+                  lineHeight: 1.7,
+                  margin: '0 0 12px',
+                  textAlign: 'left',
+                  animation: 'fadeUp .6s .15s ease both',
                 }}
               >
-                Get in Touch
-              </button>
+                UX/UI, Web Design & Development.
+              </p>
+              <p
+                style={{
+                  fontSize: 'clamp(14px,1.6vw,17px)',
+                  color: '#555',
+                  fontWeight: 300,
+                  maxWidth: 500,
+                  lineHeight: 1.8,
+                  margin: '0 0 36px',
+                  textAlign: 'left',
+                  animation: 'fadeUp .6s .2s ease both',
+                }}
+              >
+                Crafting seamless digital experiences — from design to
+                development.
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 8,
+                  marginBottom: 40,
+                  flexWrap: 'wrap',
+                  animation: 'fadeUp .6s .25s ease both',
+                }}
+              >
+                {['Phnom Penh, Cambodia', 'Web Design', 'UX/UI', 'Webflow'].map(
+                  (tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        fontSize: 11,
+                        fontFamily: "'DM Mono',monospace",
+                        color: ACCENT2,
+                        border: `1px solid ${ACCENT}44`,
+                        padding: '4px 10px',
+                        borderRadius: 99,
+                        background: '#8B5CF611',
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  )
+                )}
+              </div>
+              <div
+                className="hero-btns"
+                style={{ animation: 'fadeUp .6s .3s ease both' }}
+              >
+                <button
+                  onClick={() => scrollTo('Projects')}
+                  style={{
+                    padding: '14px 32px',
+                    background: ACCENT,
+                    border: 'none',
+                    borderRadius: 8,
+                    color: '#fff',
+                    fontFamily: "'Sora',sans-serif",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'opacity .2s',
+                  }}
+                  onMouseEnter={(e) => (e.target.style.opacity = 0.85)}
+                  onMouseLeave={(e) => (e.target.style.opacity = 1)}
+                >
+                  View My Work
+                </button>
+                <button
+                  onClick={() => scrollTo('Contact')}
+                  style={{
+                    padding: '14px 32px',
+                    background: 'transparent',
+                    border: '1px solid #2a2040',
+                    borderRadius: 8,
+                    color: '#aaa',
+                    fontFamily: "'Sora',sans-serif",
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    transition: 'border-color .2s,color .2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.borderColor = ACCENT;
+                    e.target.style.color = ACCENT;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.borderColor = '#2a2040';
+                    e.target.style.color = '#aaa';
+                  }}
+                >
+                  Get in Touch
+                </button>
+              </div>
             </div>
+
+            {/* Right — profile card */}
+            <ProfileCard
+              avatarUrl="https://media.licdn.com/dms/image/v2/D5603AQFlf_kv3pQYKw/profile-displayphoto-shrink_800_800/B56ZWi8ZOmGQAc-/0/1742195498963?e=1781136000&v=beta&t=s-JA6nbi8dWH7D8JbrVmRrnltrcOz9vpXBC8PTNkXAY"
+              name=""
+              title="UX/UI · Web Design & Dev"
+              handle="ousachea"
+              status="Available for projects"
+              contactText="Hire Me"
+              showUserInfo={true}
+              enableTilt={true}
+              enableMobileTilt={false}
+              behindGlowEnabled={true}
+              behindGlowColor="rgba(139, 92, 246, 0.55)"
+              behindGlowSize="55%"
+              innerGradient="linear-gradient(145deg,#2a1050cc 0%,#8B5CF644 100%)"
+              onContactClick={() => document.getElementById('Contact')?.scrollIntoView({ behavior: 'smooth' })}
+            />
           </div>
         </Inner>
         <div

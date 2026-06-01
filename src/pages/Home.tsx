@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Lenis from 'lenis';
 
 // ─── SoftAurora ───────────────────────────────────────────────────────────────
 function hexToVec3(hex) {
@@ -584,10 +585,12 @@ function Section({ id, children, style }) {
     <section
       id={id}
       ref={ref}
+      className="resp-section"
       style={{
         opacity: vis ? 1 : 0,
         transform: vis ? 'translateY(0)' : 'translateY(28px)',
         transition: 'opacity .65s ease, transform .65s ease',
+        scrollSnapAlign: 'start',
         ...style,
       }}
     >
@@ -604,7 +607,7 @@ function SL({ n, label }) {
         fontSize: 12,
         color: ACCENT,
         letterSpacing: 2,
-        marginBottom: 16,
+        marginBottom: 20,
       }}
     >
       {n} / {label}
@@ -615,7 +618,7 @@ function SL({ n, label }) {
 function SkillBar({ name, level, delay }) {
   const [ref, vis] = useFadeIn();
   return (
-    <div ref={ref} style={{ marginBottom: 18 }}>
+    <div ref={ref} style={{ marginBottom: 22 }}>
       <div
         style={{
           display: 'flex',
@@ -661,6 +664,28 @@ export default function Portfolio() {
   const [openCase, setOpenCase] = useState(null);
   const [formState, setFormState] = useState({ name: '', email: '', msg: '' });
   const [sent, setSent] = useState(false);
+  const lenisRef = useRef<Lenis | null>(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    lenisRef.current = lenis;
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -676,8 +701,15 @@ export default function Portfolio() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(el, { offset: -64 });
+    } else {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const handleSend = () => {
     setSent(true);
     setFormState({ name: '', email: '', msg: '' });
@@ -692,7 +724,6 @@ export default function Portfolio() {
         background: '#080810',
         color: '#e8e8e8',
         minHeight: '100vh',
-        overflowX: 'hidden',
       }}
     >
       <style>{`
@@ -708,6 +739,29 @@ export default function Portfolio() {
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
         @keyframes slideIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
         ${BORDER_GLOW_CSS}
+        /* ── Responsive ── */
+        @media(max-width:1024px){
+          .resp-grid-3{grid-template-columns:1fr 1fr !important;}
+        }
+        @media(max-width:768px){
+          .nav-links{gap:14px !important;}
+          .nav-links button{font-size:11px !important;}
+          .resp-section{padding:80px 0 !important;}
+          .resp-grid{grid-template-columns:1fr !important;gap:20px !important;}
+          .resp-grid-3{grid-template-columns:1fr !important;gap:16px !important;}
+          .skill-grid{gap:24px 0 !important;}
+          .about-avatar{display:none !important;}
+          .resp-footer{flex-direction:column !important;gap:16px !important;align-items:flex-start !important;}
+          .hero-inner{max-width:100% !important;}
+          .resp-stats{gap:28px !important;}
+          .resp-hero{padding:0 6vw !important;}
+          .resp-main{padding:0 5vw !important;}
+        }
+        @media(max-width:580px){
+          .nav-links{display:none !important;}
+          .resp-section{padding:64px 0 !important;}
+          .resp-hero{padding-top:80px !important;}
+        }
       `}</style>
 
       {/* CASE STUDY MODAL */}
@@ -731,7 +785,7 @@ export default function Portfolio() {
               background: '#0f0c1e',
               border: '1px solid #2a1f50',
               borderRadius: 20,
-              padding: 40,
+              padding: 48,
               maxWidth: 620,
               width: '100%',
               animation: 'slideIn .35s ease both',
@@ -742,7 +796,7 @@ export default function Portfolio() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
-                marginBottom: 28,
+                marginBottom: 32,
               }}
             >
               <div>
@@ -820,8 +874,8 @@ export default function Portfolio() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 5vw',
-          height: 60,
+          padding: '0 6vw',
+          height: 64,
           background: 'rgba(8,8,16,.88)',
           backdropFilter: 'blur(16px)',
           borderBottom: '0.5px solid #1a1030',
@@ -837,7 +891,7 @@ export default function Portfolio() {
         >
           {'<Ousa />'}
         </span>
-        <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
+        <div className="nav-links" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
           {NAV_LINKS.map((l) => (
             <button
               key={l}
@@ -882,6 +936,7 @@ export default function Portfolio() {
 
       {/* HERO */}
       <header
+        className="resp-hero"
         style={{
           minHeight: '100vh',
           display: 'flex',
@@ -889,6 +944,7 @@ export default function Portfolio() {
           justifyContent: 'center',
           padding: '0 8vw',
           position: 'relative',
+          scrollSnapAlign: 'start',
           overflow: 'hidden',
         }}
       >
@@ -931,13 +987,13 @@ export default function Portfolio() {
             pointerEvents: 'none',
           }}
         />
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: 720 }}>
+        <div className="hero-inner" style={{ position: 'relative', zIndex: 2, maxWidth: 720 }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: 10,
-              marginBottom: 20,
+              marginBottom: 28,
               animation: 'fadeUp .6s ease both',
             }}
           >
@@ -968,7 +1024,7 @@ export default function Portfolio() {
               fontWeight: 700,
               lineHeight: 1.05,
               letterSpacing: -3,
-              marginBottom: 24,
+              marginBottom: 28,
               animation: 'fadeUp .6s .1s ease both',
             }}
           >
@@ -982,8 +1038,8 @@ export default function Portfolio() {
               color: '#888',
               fontWeight: 300,
               maxWidth: 500,
-              lineHeight: 1.75,
-              marginBottom: 16,
+              lineHeight: 1.8,
+              marginBottom: 24,
               animation: 'fadeUp .6s .15s ease both',
             }}
           >
@@ -994,7 +1050,7 @@ export default function Portfolio() {
             style={{
               display: 'flex',
               gap: 12,
-              marginBottom: 40,
+              marginBottom: 48,
               flexWrap: 'wrap',
               animation: 'fadeUp .6s .2s ease both',
             }}
@@ -1024,7 +1080,7 @@ export default function Portfolio() {
           <div
             style={{
               display: 'flex',
-              gap: 16,
+              gap: 20,
               animation: 'fadeUp .6s .3s ease both',
             }}
           >
@@ -1108,14 +1164,15 @@ export default function Portfolio() {
         </div>
       </header>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 6vw' }}>
+      <div className="resp-main" style={{ maxWidth: 900, margin: '0 auto', padding: '0 6vw' }}>
         {/* ABOUT */}
-        <Section id="About" style={{ padding: '100px 0' }}>
+        <Section id="About" style={{ padding: '120px 0' }}>
           <div
+            className="resp-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: 64,
+              gap: 80,
               alignItems: 'center',
             }}
           >
@@ -1156,7 +1213,7 @@ export default function Portfolio() {
                 interfaces in Figma, I bring both the big picture and the fine
                 detail — every time.
               </p>
-              <div style={{ display: 'flex', gap: 32 }}>
+              <div className="resp-stats" style={{ display: 'flex', gap: 40 }}>
                 {[
                   ['20+', 'Projects Delivered'],
                   ['5+', 'Years Experience'],
@@ -1186,7 +1243,7 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="about-avatar" style={{ display: 'flex', justifyContent: 'center' }}>
               <div
                 style={{
                   width: 220,
@@ -1208,7 +1265,7 @@ export default function Portfolio() {
         </Section>
 
         {/* EXPERIENCE */}
-        <Section id="Experience" style={{ padding: '100px 0' }}>
+        <Section id="Experience" style={{ padding: '120px 0' }}>
           <SL n="02" label="EXPERIENCE" />
           <h2
             style={{
@@ -1236,7 +1293,7 @@ export default function Portfolio() {
                 key={i}
                 style={{
                   paddingLeft: 32,
-                  marginBottom: 48,
+                  marginBottom: 56,
                   position: 'relative',
                 }}
               >
@@ -1334,7 +1391,8 @@ export default function Portfolio() {
             Education & Certifications
           </h2>
           <div
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}
+            className="resp-grid"
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}
           >
             {EDUCATION.map((ed, i) => (
               <BorderGlow
@@ -1344,7 +1402,7 @@ export default function Portfolio() {
                 borderRadius={12}
                 glowRadius={32}
               >
-                <div style={{ padding: '20px 24px' }}>
+                <div style={{ padding: '24px 28px' }}>
                   <p
                     style={{
                       fontSize: 15,
@@ -1381,7 +1439,7 @@ export default function Portfolio() {
         </Section>
 
         {/* PROJECTS */}
-        <Section id="Projects" style={{ padding: '100px 0' }}>
+        <Section id="Projects" style={{ padding: '120px 0' }}>
           <SL n="03" label="PROJECTS" />
           <h2
             style={{
@@ -1397,14 +1455,15 @@ export default function Portfolio() {
             style={{
               color: '#555',
               fontSize: 14,
-              marginBottom: 40,
+              marginBottom: 48,
               fontFamily: "'DM Mono',monospace",
             }}
           >
             Hover to illuminate · Click to read the case study →
           </p>
           <div
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}
+            className="resp-grid"
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}
           >
             {PROJECTS.map((p) => (
               <BorderGlow
@@ -1418,7 +1477,7 @@ export default function Portfolio() {
               >
                 <div
                   onClick={() => setOpenCase(p.id)}
-                  style={{ padding: 28, cursor: 'pointer' }}
+                  style={{ padding: 32, cursor: 'pointer' }}
                 >
                   <span
                     style={{ fontSize: 32, display: 'block', marginBottom: 16 }}
@@ -1474,7 +1533,7 @@ export default function Portfolio() {
         </Section>
 
         {/* SKILLS */}
-        <Section id="Skills" style={{ padding: '100px 0' }}>
+        <Section id="Skills" style={{ padding: '120px 0' }}>
           <SL n="04" label="SKILLS" />
           <h2
             style={{
@@ -1487,10 +1546,11 @@ export default function Portfolio() {
             Areas of Expertise
           </h2>
           <div
+            className="resp-grid skill-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '0 48px',
+              gap: '0 56px',
             }}
           >
             <div>
@@ -1519,8 +1579,8 @@ export default function Portfolio() {
             style={{
               fontSize: 20,
               fontWeight: 600,
-              marginTop: 52,
-              marginBottom: 24,
+              marginTop: 60,
+              marginBottom: 28,
               letterSpacing: -0.5,
             }}
           >
@@ -1552,8 +1612,8 @@ export default function Portfolio() {
             style={{
               fontSize: 20,
               fontWeight: 600,
-              marginTop: 52,
-              marginBottom: 24,
+              marginTop: 60,
+              marginBottom: 28,
               letterSpacing: -0.5,
             }}
           >
@@ -1618,20 +1678,21 @@ export default function Portfolio() {
         </Section>
 
         {/* SERVICES */}
-        <Section style={{ padding: '0 0 100px' }}>
+        <Section style={{ padding: '0 0 120px' }}>
           <SL n="05" label="SERVICES" />
           <h2
             style={{
               fontSize: 36,
               fontWeight: 700,
               letterSpacing: -1,
-              marginBottom: 40,
+              marginBottom: 48,
             }}
           >
             What I Offer
           </h2>
           <div
-            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}
+            className="resp-grid"
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}
           >
             {SERVICES.map((s) => (
               <BorderGlow
@@ -1642,7 +1703,7 @@ export default function Portfolio() {
                 glowRadius={36}
                 glowIntensity={1.1}
               >
-                <div style={{ padding: 28 }}>
+                <div style={{ padding: 32 }}>
                   <span
                     style={{ fontSize: 28, display: 'block', marginBottom: 14 }}
                   >
@@ -1668,23 +1729,24 @@ export default function Portfolio() {
         </Section>
 
         {/* TESTIMONIALS */}
-        <Section style={{ padding: '0 0 100px' }}>
+        <Section style={{ padding: '0 0 120px' }}>
           <SL n="06" label="TESTIMONIALS" />
           <h2
             style={{
               fontSize: 36,
               fontWeight: 700,
               letterSpacing: -1,
-              marginBottom: 40,
+              marginBottom: 48,
             }}
           >
             What Clients Say
           </h2>
           <div
+            className="resp-grid-3"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr',
-              gap: 16,
+              gap: 20,
             }}
           >
             {TESTIMONIALS.map((t) => (
@@ -1697,7 +1759,7 @@ export default function Portfolio() {
                 glowIntensity={1.0}
                 edgeSensitivity={22}
               >
-                <div style={{ padding: 24 }}>
+                <div style={{ padding: 28 }}>
                   <p
                     style={{
                       fontSize: 14,
@@ -1757,7 +1819,7 @@ export default function Portfolio() {
         </Section>
 
         {/* CONTACT */}
-        <Section id="Contact" style={{ padding: '0 0 100px' }}>
+        <Section id="Contact" style={{ padding: '0 0 120px' }}>
           <SL n="07" label="CONTACT" />
           <h2
             style={{
@@ -1769,7 +1831,7 @@ export default function Portfolio() {
           >
             Let's Build Together
           </h2>
-          <p style={{ color: '#666', marginBottom: 40, fontSize: 15 }}>
+          <p style={{ color: '#666', marginBottom: 48, fontSize: 15 }}>
             Have a project in mind? I'd love to hear about it.
           </p>
           {sent ? (
@@ -1791,7 +1853,7 @@ export default function Portfolio() {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 16,
+                gap: 20,
                 maxWidth: 520,
               }}
             >
@@ -1870,9 +1932,10 @@ export default function Portfolio() {
 
       {/* FOOTER */}
       <footer
+        className="resp-footer"
         style={{
           borderTop: '0.5px solid #15102a',
-          padding: '28px 8vw',
+          padding: '36px 8vw',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',

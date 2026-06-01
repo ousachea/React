@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Lenis from 'lenis';
+import GradientText from '../GradientText';
 
 // ─── SoftAurora ───────────────────────────────────────────────────────────────
 function hexToVec3(hex) {
@@ -818,7 +819,9 @@ export default function Portfolio() {
                     marginTop: 6,
                   }}
                 >
-                  {activeProject.title}
+                  <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+                    {activeProject.title}
+                  </GradientText>
                 </h3>
               </div>
               <button
@@ -1028,9 +1031,21 @@ export default function Portfolio() {
               animation: 'fadeUp .6s .1s ease both',
             }}
           >
-            Ousa
+            <GradientText
+              colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']}
+              animationSpeed={6}
+              pauseOnHover
+            >
+              Ousa
+            </GradientText>
             <br />
-            <span style={{ color: ACCENT }}>Chea.</span>
+            <GradientText
+              colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']}
+              animationSpeed={6}
+              pauseOnHover
+            >
+              Chea.
+            </GradientText>
           </h1>
           <p
             style={{
@@ -1187,7 +1202,9 @@ export default function Portfolio() {
                   lineHeight: 1.2,
                 }}
               >
-                Where strategy meets design
+                <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+                  Where strategy meets design
+                </GradientText>
               </h2>
               <p
                 style={{
@@ -1275,7 +1292,9 @@ export default function Portfolio() {
               marginBottom: 48,
             }}
           >
-            Work History
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              Work History
+            </GradientText>
           </h2>
           <div style={{ position: 'relative' }}>
             <div
@@ -1327,7 +1346,9 @@ export default function Portfolio() {
                         letterSpacing: -0.3,
                       }}
                     >
-                      {e.role}
+                      <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+                        {e.role}
+                      </GradientText>
                     </h3>
                     <p
                       style={{
@@ -1388,7 +1409,9 @@ export default function Portfolio() {
               marginTop: 16,
             }}
           >
-            Education & Certifications
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              Education &amp; Certifications
+            </GradientText>
           </h2>
           <div
             className="resp-grid"
@@ -1449,7 +1472,9 @@ export default function Portfolio() {
               marginBottom: 12,
             }}
           >
-            Selected Work
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              Selected Work
+            </GradientText>
           </h2>
           <p
             style={{
@@ -1502,10 +1527,11 @@ export default function Portfolio() {
                       fontWeight: 600,
                       marginBottom: 10,
                       letterSpacing: -0.5,
-                      color: '#e8e8e8',
                     }}
                   >
-                    {p.title}
+                    <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+                      {p.title}
+                    </GradientText>
                   </h3>
                   <p
                     style={{
@@ -1543,7 +1569,9 @@ export default function Portfolio() {
               marginBottom: 48,
             }}
           >
-            Areas of Expertise
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              Areas of Expertise
+            </GradientText>
           </h2>
           <div
             className="resp-grid skill-grid"
@@ -1584,7 +1612,9 @@ export default function Portfolio() {
               letterSpacing: -0.5,
             }}
           >
-            Tools & Platforms
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+              Tools &amp; Platforms
+            </GradientText>
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             {TOOLS.map((t) => (
@@ -1617,7 +1647,9 @@ export default function Portfolio() {
               letterSpacing: -0.5,
             }}
           >
-            Languages
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+              Languages
+            </GradientText>
           </h3>
           <div
             style={{
@@ -1688,7 +1720,9 @@ export default function Portfolio() {
               marginBottom: 48,
             }}
           >
-            What I Offer
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              What I Offer
+            </GradientText>
           </h2>
           <div
             className="resp-grid"
@@ -1714,10 +1748,11 @@ export default function Portfolio() {
                       fontSize: 17,
                       fontWeight: 600,
                       marginBottom: 10,
-                      color: '#e8e8e8',
                     }}
                   >
-                    {s.title}
+                    <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={8} pauseOnHover>
+                      {s.title}
+                    </GradientText>
                   </h3>
                   <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7 }}>
                     {s.desc}
@@ -1739,7 +1774,9 @@ export default function Portfolio() {
               marginBottom: 48,
             }}
           >
-            What Clients Say
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              What Clients Say
+            </GradientText>
           </h2>
           <div
             className="resp-grid-3"
@@ -1829,7 +1866,9 @@ export default function Portfolio() {
               marginBottom: 12,
             }}
           >
-            Let's Build Together
+            <GradientText colors={['#c084fc', '#818cf8', '#38bdf8', '#818cf8', '#c084fc']} animationSpeed={7} pauseOnHover>
+              Let's Build Together
+            </GradientText>
           </h2>
           <p style={{ color: '#666', marginBottom: 48, fontSize: 15 }}>
             Have a project in mind? I'd love to hear about it.

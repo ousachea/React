@@ -9,8 +9,10 @@ import gsap from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useInView, useMotionValue, useSpring } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
+import Lenis from 'lenis';
 import ProfileCard from './ProfileCard';
 import Masonry from './Masonry';
+import GradientText from './GradientText';
 
 gsap.registerPlugin(InertiaPlugin);
 
@@ -1417,7 +1419,7 @@ function SL({ n, label }) {
       style={{
         fontFamily: "'DM Mono',monospace",
         fontSize: 12,
-        color: ACCENT,
+        color: '#ffffff',
         letterSpacing: 2,
         margin: '0 0 20px',
         textAlign: 'left',
@@ -1431,53 +1433,36 @@ function SL({ n, label }) {
 function SkillBar({ name, level, delay }) {
   const [ref, vis] = useFadeIn();
   return (
-    <div ref={ref} style={{ marginBottom: 20 }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: 7,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 13,
-            fontFamily: "'DM Mono',monospace",
-            color: '#ccc',
-            display: 'block',
-            textAlign: 'left',
-          }}
-        >
-          {name}
-        </span>
-        <span
-          style={{
-            fontSize: 12,
-            color: '#555',
-            display: 'block',
-            textAlign: 'right',
-          }}
-        >
-          {level}%
-        </span>
+    <div ref={ref} style={{ marginBottom: 22 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
+        <span style={{ fontSize: 13, color: '#ccc', textAlign: 'left' }}>{name}</span>
+        <span style={{ fontSize: 12, fontFamily: "'DM Mono',monospace", color: ACCENT2, fontWeight: 500 }}>{level}%</span>
       </div>
-      <div
-        style={{
-          height: 4,
-          background: '#1e1e1e',
+      <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 99, overflow: 'visible', position: 'relative' }}>
+        <div style={{
+          height: '100%',
+          width: vis ? `${level}%` : '0%',
+          background: `linear-gradient(90deg,${ACCENT},${ACCENT2})`,
           borderRadius: 99,
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            height: '100%',
-            width: vis ? `${level}%` : '0%',
-            background: `linear-gradient(90deg,${ACCENT},${ACCENT2})`,
-            borderRadius: 99,
-            transition: `width .9s cubic-bezier(.22,1,.36,1) ${delay}ms`,
-          }}
-        />
+          transition: `width 1s cubic-bezier(.22,1,.36,1) ${delay}ms`,
+          boxShadow: `0 0 8px ${ACCENT}99`,
+          position: 'relative',
+        }}>
+          {/* glowing tip */}
+          <div style={{
+            position: 'absolute',
+            right: 0,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 9,
+            height: 9,
+            borderRadius: '50%',
+            background: ACCENT2,
+            boxShadow: `0 0 8px 2px ${ACCENT}cc`,
+            opacity: vis ? 1 : 0,
+            transition: `opacity .3s ease ${delay + 800}ms`,
+          }} />
+        </div>
       </div>
     </div>
   );
@@ -1562,8 +1547,8 @@ function ExperienceItem({ e, i, isLast }) {
           <div style={{ padding: '24px 28px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
               <div>
-                <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3, color: '#e8e8e8', margin: '0 0 4px', textAlign: 'left' }}>
-                  {e.role}
+                <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3, margin: '0 0 4px', textAlign: 'left' }}>
+                  <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{e.role}</GradientText>
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 13, color: ACCENT2, fontFamily: "'DM Mono',monospace" }}>
@@ -1762,9 +1747,12 @@ function FaqItem({ q, a }) {
    Global CSS
 ───────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
   *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-snap-type:y proximity;scroll-padding-top:64px;}
   html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#080810!important;}
+  body{font-family:'DM Sans',system-ui,sans-serif;}
+  h1,h2,h3,h4,h5,h6{font-family:'Space Grotesk',system-ui,sans-serif;}
   #root,#app,[data-reactroot]{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;}
   ::-webkit-scrollbar{width:4px;}
   ::-webkit-scrollbar-track{background:#080810;}
@@ -1810,6 +1798,7 @@ const GLOBAL_CSS = `
   .hero-h1{font-size:clamp(48px,9vw,140px);font-weight:700;line-height:1.02;letter-spacing:-4px;margin-bottom:24px;animation:fadeUp .6s .1s ease both;}
   @media(max-width:480px){.hero-h1{letter-spacing:-2px;}}
   .hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+  section{scroll-snap-align:start;}
   @media(max-width:640px){section{padding:60px 0!important;}.modal-inner{padding:24px!important;}}
   .hero-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(40px,5vw,80px);align-items:center;}
   @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}.hero-grid .pc-card-wrapper{display:none;}}
@@ -1874,8 +1863,21 @@ export default function Portfolio() {
     return () => clearInterval(timer);
   }, [tGroups.length]);
 
-  const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const lenisRef = useRef<Lenis | null>(null);
+  useEffect(() => {
+    const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+    lenisRef.current = lenis;
+    let rafId: number;
+    const raf = (time: number) => { lenis.raf(time); rafId = requestAnimationFrame(raf); };
+    rafId = requestAnimationFrame(raf);
+    return () => { cancelAnimationFrame(rafId); lenis.destroy(); };
+  }, []);
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    lenisRef.current ? lenisRef.current.scrollTo(el, { offset: -64 }) : el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSend = () => {
     setSent(true);
@@ -1988,7 +1990,7 @@ export default function Portfolio() {
                     textAlign: 'left',
                   }}
                 >
-                  {activeProject.title}
+                  <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{activeProject.title}</GradientText>
                 </h3>
               </div>
               <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
@@ -2061,6 +2063,14 @@ export default function Portfolio() {
                 </p>
               </div>
             ))}
+            <button
+              onClick={() => { setOpenCase(null); navigate(`/projects/${activeProject.id}`); }}
+              style={{ width: '100%', marginTop: 8, padding: '12px', background: ACCENT, border: 'none', borderRadius: 10, color: '#fff', fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer', transition: 'opacity .2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
+              onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
+            >
+              View Full Case Study →
+            </button>
           </div>
         </div>
       )}
@@ -2174,9 +2184,9 @@ export default function Portfolio() {
                 </span>
               </div>
               <h1 className="hero-h1">
-                Chea
+                <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={6} pauseOnHover>Chea</GradientText>
                 <br />
-                <span style={{ color: ACCENT }}>Ousa.</span>
+                <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={6} pauseOnHover>Ousa.</GradientText>
               </h1>
               <p
                 style={{
@@ -2281,6 +2291,29 @@ export default function Portfolio() {
                 >
                   Get in Touch
                 </button>
+                <a
+                  href="/Ousa-Chea-CV.pdf"
+                  download
+                  style={{
+                    padding: '14px 24px',
+                    background: 'transparent',
+                    border: `1px solid ${ACCENT}44`,
+                    borderRadius: 8,
+                    color: ACCENT2,
+                    fontSize: 14,
+                    fontFamily: "'DM Mono',monospace",
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    transition: 'border-color .2s, background .2s',
+                  }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = ACCENT; (e.currentTarget as HTMLAnchorElement).style.background = `${ACCENT}11`; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = `${ACCENT}44`; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+                >
+                  ↓ Download CV
+                </a>
               </div>
             </div>
 
@@ -2366,11 +2399,37 @@ export default function Portfolio() {
                 whiteSpace: 'nowrap',
               }}
             >
-              PAST WORK
+              TRUSTED BY
             </span>
           </div>
           <Marquee items={MARQUEE_SITES} />
         </div>
+      </div>
+
+      {/* ── STATS BAR ── */}
+      <div style={{ borderBottom: '1px solid #1a1030', borderTop: '1px solid #1a1030', background: 'rgba(139,92,246,0.04)' }}>
+        <Inner>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '0', padding: '0' }}>
+            {[
+              { to: 8,  suffix: '+', label: 'Years Experience' },
+              { to: 50, suffix: '+', label: 'Projects Delivered' },
+              { to: 30, suffix: '+', label: 'Happy Clients' },
+              { to: 12, suffix: '+', label: 'Countries Reached' },
+              { to: 95, suffix: '%', label: 'On-Time Delivery' },
+            ].map(({ to, suffix, label }, i) => (
+              <div key={label} style={{
+                padding: 'clamp(24px,4vw,36px) clamp(16px,2vw,28px)',
+                borderRight: i < 4 ? '1px solid #1a1030' : 'none',
+                textAlign: 'center',
+              }}>
+                <p style={{ fontSize: 'clamp(28px,4vw,44px)', fontWeight: 700, color: ACCENT2, letterSpacing: -1, margin: '0 0 4px', fontFamily: "'Space Grotesk',sans-serif" }}>
+                  <CountUp from={0} to={to} duration={2} delay={0.2} />{suffix}
+                </p>
+                <p style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace", letterSpacing: 1, margin: 0 }}>{label}</p>
+              </div>
+            ))}
+          </div>
+        </Inner>
       </div>
 
       {/* ── ABOUT ── */}
@@ -2389,7 +2448,7 @@ export default function Portfolio() {
                   textAlign: 'left',
                 }}
               >
-                Hello Again 👋
+                <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Hello Again 👋</GradientText>
               </h2>
               <p
                 style={{
@@ -2536,6 +2595,18 @@ export default function Portfolio() {
                 </BorderGlow>
               ))}
             </div>
+
+            {/* Currently building */}
+            <BorderGlow glowColor="160 70 50" colors={['#34d399','#10b981','#38bdf8']} borderRadius={14} glowRadius={28} glowIntensity={1.0}>
+              <div style={{ padding: '20px 22px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>⚡</span>
+                <div>
+                  <p style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: '#34d399', letterSpacing: 1, margin: '0 0 6px' }}>CURRENTLY BUILDING</p>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: '#e8e8e8', margin: '0 0 4px', textAlign: 'left' }}>Personal Portfolio v2</p>
+                  <p style={{ fontSize: 12, color: '#555', lineHeight: 1.5, margin: 0, textAlign: 'left' }}>React + Vite · Shipping Jun 2026</p>
+                </div>
+              </div>
+            </BorderGlow>
           </div>
         </Inner>
       </Section>
@@ -2553,9 +2624,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            Results-driven design,
-            <br />
-            with a personal touch.
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Results-driven design,<br />with a personal touch.</GradientText>
           </h2>
           <p
             style={{
@@ -2595,7 +2664,7 @@ export default function Portfolio() {
                       textAlign: 'left',
                     }}
                   >
-                    {s.title}
+                    <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{s.title}</GradientText>
                   </h3>
                   <p
                     style={{
@@ -2628,7 +2697,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            A taste of what I can do.
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>A taste of what I can do.</GradientText>
           </h2>
           <p
             style={{
@@ -2641,8 +2710,48 @@ export default function Portfolio() {
           >
             Hover to illuminate · Click to read the case study →
           </p>
+
+          {/* Featured project */}
+          {(() => { const fp = PROJECTS.find(p => p.id === 2)!; return (
+            <BorderGlow glowColor={fp.glowColor} colors={fp.colors} borderRadius={16} glowRadius={44} glowIntensity={1.2}>
+              <div
+                onClick={() => setOpenCase(fp.id)}
+                style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', cursor: 'pointer', minHeight: 260 }}
+              >
+                <div style={{ padding: 'clamp(24px,4vw,40px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <span style={{ display: 'inline-block', fontSize: 11, fontFamily: "'DM Mono',monospace", color: fp.accent, letterSpacing: 1, border: `1px solid ${fp.accent}44`, padding: '3px 10px', borderRadius: 99, marginBottom: 16 }}>⭐ FEATURED · {fp.tag}</span>
+                    <h3 style={{ fontSize: 'clamp(22px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 12px', color: '#e8e8e8' }}>
+                      <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{fp.title}</GradientText>
+                    </h3>
+                    <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: '0 0 24px' }}>{fp.desc}</p>
+                  </div>
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                    {[['Global','Audience Reach'],['A11Y','Accessible'],['100%','Brand Compliant']].map(([n,l]) => (
+                      <div key={l}>
+                        <p style={{ fontSize: 22, fontWeight: 700, color: fp.accent, margin: '0 0 2px', fontFamily: "'Space Grotesk',sans-serif" }}>{n}</p>
+                        <p style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace", margin: 0 }}>{l}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ borderRadius: '0 16px 16px 0', overflow: 'hidden' }}>
+                  <img src={fp.image} alt={fp.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(40%)', transition: 'filter .4s ease' }}
+                    onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0%)'}
+                    onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(40%)'}
+                  />
+                </div>
+              </div>
+            </BorderGlow>
+          ); })()}
+
+          <div style={{ margin: '40px 0 12px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: '#333', letterSpacing: 2 }}>MORE PROJECTS</span>
+            <div style={{ flex: 1, height: 1, background: '#1a1030' }} />
+          </div>
+
           <Masonry
-            items={PROJECTS.map((p, i) => ({
+            items={PROJECTS.filter(p => p.id !== 2).map((p, i) => ({
               id: String(p.id),
               img: p.image,
               url: p.url,
@@ -2674,9 +2783,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            You're 5 steps away
-            <br />
-            from a new website.
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>You're 5 steps away<br />from a new website.</GradientText>
           </h2>
           <p
             style={{
@@ -2734,7 +2841,7 @@ export default function Portfolio() {
                       textAlign: 'left',
                     }}
                   >
-                    {step.title}
+                    <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{step.title}</GradientText>
                   </h3>
                   <p
                     style={{
@@ -2767,7 +2874,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            Work History
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Work History</GradientText>
           </h2>
           <div style={{ maxWidth: 680, margin: '0 auto' }}>
             <ExperienceList items={EXPERIENCE} />
@@ -2781,7 +2888,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            Education & Certifications
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Education &amp; Certifications</GradientText>
           </h2>
           <div className="edu-grid">
             {EDUCATION.map((ed, i) => (
@@ -2830,6 +2937,33 @@ export default function Portfolio() {
               </BorderGlow>
             ))}
           </div>
+
+          {/* Certifications strip */}
+          <div style={{ marginTop: 48 }}>
+            <p style={{ fontSize: 11, color: '#333', fontFamily: "'DM Mono',monospace", letterSpacing: 2, margin: '0 0 16px', textAlign: 'left' }}>CERTIFIED &amp; ACCREDITED</p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              {[
+                { name: 'PMP®', body: 'Project Management Institute', color: '#f87171' },
+                { name: 'CSM®', body: 'Scrum Alliance', color: '#34d399' },
+                { name: 'Google UX Design', body: 'Google / Coursera', color: '#38bdf8' },
+                { name: 'Webflow Expert 95%', body: 'Webflow University', color: '#c084fc' },
+                { name: 'Uxcel UX Design', body: 'Uxcel', color: '#a78bfa' },
+              ].map(({ name, body, color }) => (
+                <div key={name} style={{
+                  padding: '10px 16px',
+                  borderRadius: 10,
+                  border: `1px solid ${color}33`,
+                  background: `${color}0d`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 3,
+                }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color, fontFamily: "'Space Grotesk',sans-serif" }}>{name}</span>
+                  <span style={{ fontSize: 10, color: '#444', fontFamily: "'DM Mono',monospace" }}>{body}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </Inner>
       </Section>
 
@@ -2842,44 +2976,93 @@ export default function Portfolio() {
               fontSize: 'clamp(28px,5vw,42px)',
               fontWeight: 700,
               letterSpacing: -1.5,
-              margin: '0 0 56px',
+              margin: '0 0 48px',
               textAlign: 'left',
             }}
           >
-            Areas of Expertise
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Areas of Expertise</GradientText>
           </h2>
-          <div className="skills-grid">
-            <div>
-              {SKILLS.slice(0, 4).map((s, i) => (
-                <SkillBar
-                  key={s.name}
-                  name={s.name}
-                  level={s.level}
-                  delay={i * 80}
-                />
-              ))}
-            </div>
-            <div>
-              {SKILLS.slice(4).map((s, i) => (
-                <SkillBar
-                  key={s.name}
-                  name={s.name}
-                  level={s.level}
-                  delay={i * 80}
-                />
-              ))}
-            </div>
+
+          {/* ── Skill group cards ── */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%,280px),1fr))', gap: 20 }}>
+            {[
+              {
+                icon: '📋',
+                label: 'Management',
+                skills: [
+                  { name: 'Project Management', level: 95 },
+                  { name: 'Agile / Scrum', level: 90 },
+                  { name: 'Stakeholder Comms', level: 85 },
+                  { name: 'Product Roadmapping', level: 88 },
+                  { name: 'Sprint Planning', level: 87 },
+                  { name: 'Risk Management', level: 80 },
+                  { name: 'Budget Management', level: 76 },
+                ],
+                glowColor: '270 70 75',
+                colors: ['#c084fc','#818cf8','#6366f1'],
+              },
+              {
+                icon: '🎨',
+                label: 'Design',
+                skills: [
+                  { name: 'Figma', level: 92 },
+                  { name: 'UI / UX Design', level: 88 },
+                  { name: 'Design Systems', level: 80 },
+                  { name: 'Wireframing', level: 91 },
+                  { name: 'Prototyping', level: 89 },
+                  { name: 'User Research', level: 84 },
+                  { name: 'Adobe XD', level: 75 },
+                ],
+                glowColor: '285 70 70',
+                colors: ['#e879f9','#c084fc','#818cf8'],
+              },
+              {
+                icon: '💻',
+                label: 'Technical',
+                skills: [
+                  { name: 'HTML & CSS', level: 78 },
+                  { name: 'Webflow', level: 74 },
+                  { name: 'Responsive Design', level: 82 },
+                  { name: 'JavaScript', level: 62 },
+                  { name: 'Git / Version Control', level: 68 },
+                  { name: 'CMS (Contentful / Strapi)', level: 70 },
+                ],
+                glowColor: '239 68 68',
+                colors: ['#818cf8','#6366f1','#c084fc'],
+              },
+            ].map(({ icon, label, skills, glowColor, colors }) => (
+              <BorderGlow
+                key={label}
+                glowColor={glowColor}
+                colors={colors}
+                borderRadius={16}
+                glowRadius={36}
+                glowIntensity={1.1}
+              >
+                <div style={{ padding: '28px 28px 24px' }}>
+                  {/* Card header */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
+                    <span style={{ fontSize: 22 }}>{icon}</span>
+                    <span style={{
+                      fontSize: 11,
+                      fontFamily: "'DM Mono',monospace",
+                      letterSpacing: 2,
+                      color: '#555',
+                      textTransform: 'uppercase',
+                    }}>{label}</span>
+                  </div>
+                  {/* Skill bars */}
+                  {skills.map((s, i) => (
+                    <SkillBar key={s.name} name={s.name} level={s.level} delay={i * 100} />
+                  ))}
+                </div>
+              </BorderGlow>
+            ))}
           </div>
-          <h3
-            style={{
-              fontSize: 'clamp(18px,3vw,22px)',
-              fontWeight: 600,
-              margin: '56px 0 24px',
-              letterSpacing: -0.5,
-              textAlign: 'left',
-            }}
-          >
-            Tools & Platforms
+
+          {/* ── Tools & Platforms ── */}
+          <h3 style={{ fontSize: 'clamp(18px,3vw,22px)', fontWeight: 600, margin: '56px 0 20px', letterSpacing: -0.5, textAlign: 'left' }}>
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>Tools &amp; Platforms</GradientText>
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             {TOOLS.map((t) => (
@@ -2889,12 +3072,24 @@ export default function Portfolio() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
-                  padding: '9px 16px',
+                  padding: '10px 18px',
                   borderRadius: 99,
-                  border: '1px solid #1a1030',
-                  background: '#0d0b18',
+                  border: '1px solid rgba(139,92,246,0.2)',
+                  background: 'rgba(139,92,246,0.06)',
                   fontSize: 13,
-                  color: '#bbb',
+                  color: '#ccc',
+                  cursor: 'default',
+                  transition: 'border-color .2s, background .2s, color .2s',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(168,139,250,0.6)';
+                  (e.currentTarget as HTMLDivElement).style.background = 'rgba(139,92,246,0.15)';
+                  (e.currentTarget as HTMLDivElement).style.color = '#e8e8e8';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(139,92,246,0.2)';
+                  (e.currentTarget as HTMLDivElement).style.background = 'rgba(139,92,246,0.06)';
+                  (e.currentTarget as HTMLDivElement).style.color = '#ccc';
                 }}
               >
                 <span>{t.icon}</span>
@@ -2902,71 +3097,35 @@ export default function Portfolio() {
               </div>
             ))}
           </div>
-          <h3
-            style={{
-              fontSize: 'clamp(18px,3vw,22px)',
-              fontWeight: 600,
-              margin: '48px 0 24px',
-              letterSpacing: -0.5,
-              textAlign: 'left',
-            }}
-          >
-            Languages
+
+          {/* ── Languages ── */}
+          <h3 style={{ fontSize: 'clamp(18px,3vw,22px)', fontWeight: 600, margin: '48px 0 20px', letterSpacing: -0.5, textAlign: 'left' }}>
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>Languages</GradientText>
           </h3>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 16,
-              maxWidth: 480,
-            }}
-          >
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             {LANGUAGES.map((l) => (
-              <div key={l.lang}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    marginBottom: 7,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontFamily: "'DM Mono',monospace",
-                      color: '#ccc',
-                      textAlign: 'left',
-                    }}
-                  >
-                    {l.lang}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      color: '#555',
-                      fontFamily: "'DM Mono',monospace",
-                      textAlign: 'right',
-                    }}
-                  >
-                    {l.level}
-                  </span>
+              <div
+                key={l.lang}
+                style={{
+                  flex: '1 1 200px',
+                  padding: '20px 24px',
+                  borderRadius: 14,
+                  border: '1px solid rgba(139,92,246,0.2)',
+                  background: 'rgba(139,92,246,0.05)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
+                  <span style={{ fontSize: 16, fontWeight: 600, color: '#e8e8e8', fontFamily: "'Space Grotesk',sans-serif" }}>{l.lang}</span>
+                  <span style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: ACCENT2, letterSpacing: 1 }}>{l.level}</span>
                 </div>
-                <div
-                  style={{
-                    height: 3,
-                    background: '#1e1e1e',
+                <div style={{ height: 5, background: '#1a1030', borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${l.pct}%`,
+                    background: `linear-gradient(90deg,${ACCENT},${ACCENT2})`,
                     borderRadius: 99,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '100%',
-                      width: `${l.pct}%`,
-                      background: `linear-gradient(90deg,${ACCENT},${ACCENT2})`,
-                      borderRadius: 99,
-                    }}
-                  />
+                    boxShadow: `0 0 10px ${ACCENT}66`,
+                  }} />
                 </div>
               </div>
             ))}
@@ -2987,7 +3146,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            What Clients Say
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>What Clients Say</GradientText>
           </h2>
           <div
             style={{
@@ -3046,16 +3205,15 @@ export default function Portfolio() {
               ))}
             </div>
           </div>
-          <div style={{ overflow: 'hidden', marginBottom: 24 }}>
-            <div
-              style={{
-                display: 'flex',
-                transition: 'transform .55s cubic-bezier(.22,1,.36,1)',
-                transform: `translateX(-${tSlide * 100}%)`,
-              }}
-            >
+          <div style={{ position: 'relative', marginBottom: 24 }}>
               {tGroups.map((group, gi) => (
-                <div key={gi} style={{ minWidth: '100%' }}>
+                <div key={gi} style={{
+                  position: gi === 0 ? 'relative' : 'absolute',
+                  inset: gi === 0 ? undefined : 0,
+                  opacity: gi === tSlide ? 1 : 0,
+                  transition: 'opacity .55s ease',
+                  pointerEvents: gi === tSlide ? 'auto' : 'none',
+                }}>
                   {/* ── Responsive grid: columns set by tPerSlide ── */}
                   <div
                     style={{
@@ -3164,7 +3322,6 @@ export default function Portfolio() {
                   </div>
                 </div>
               ))}
-            </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
             {tGroups.map((_, i) => (
@@ -3204,7 +3361,7 @@ export default function Portfolio() {
                   textAlign: 'left',
                 }}
               >
-                Frequently Asked Questions
+                <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Frequently Asked Questions</GradientText>
               </h2>
               <p
                 style={{
@@ -3240,9 +3397,7 @@ export default function Portfolio() {
               textAlign: 'left',
             }}
           >
-            Lessons learned along
-            <br />
-            my design journey.
+            <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Lessons learned along<br />my design journey.</GradientText>
           </h2>
           <p
             style={{
@@ -3309,7 +3464,7 @@ export default function Portfolio() {
                       textAlign: 'left',
                     }}
                   >
-                    {a.title}
+                    <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{a.title}</GradientText>
                   </h3>
                   <p
                     style={{
@@ -3356,7 +3511,7 @@ export default function Portfolio() {
                   textAlign: 'left',
                 }}
               >
-                Let's build something great together.
+                <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={7} pauseOnHover>Let's build something great together.</GradientText>
               </h2>
               <p
                 style={{
@@ -3379,8 +3534,8 @@ export default function Portfolio() {
                   { icon: '📞', label: 'Phone', value: '+855 92 850 751' },
                   {
                     icon: '📍',
-                    label: 'Location',
-                    value: 'Phnom Penh, Cambodia',
+                    label: 'Location · Timezone',
+                    value: 'Phnom Penh, Cambodia · GMT+7',
                   },
                 ].map(({ icon, label, value }) => (
                   <BorderGlow
@@ -3442,27 +3597,29 @@ export default function Portfolio() {
                   CERTIFIED WITH
                 </p>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {[
-                    'Google UX Design',
-                    'Webflow Expert (95%)',
-                    'Uxcel UX Design',
-                  ].map((cert) => (
-                    <span
-                      key={cert}
-                      style={{
-                        fontSize: 11,
-                        fontFamily: "'DM Mono',monospace",
-                        color: '#555',
-                        border: '1px solid #1a1030',
-                        padding: '5px 12px',
-                        borderRadius: 99,
-                        background: '#06050e',
-                      }}
-                    >
+                  {['PMP®', 'CSM®', 'Google UX Design', 'Webflow Expert (95%)', 'Uxcel UX Design'].map((cert) => (
+                    <span key={cert} style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: ACCENT2, border: `1px solid ${ACCENT}33`, padding: '5px 12px', borderRadius: 99, background: `${ACCENT}0d` }}>
                       {cert}
                     </span>
                   ))}
                 </div>
+              </div>
+
+              {/* Availability CTA */}
+              <div style={{ marginTop: 32, padding: '20px 24px', borderRadius: 14, border: '1px solid #34d39933', background: '#34d3990d', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#3DAB72', display: 'inline-block', boxShadow: '0 0 8px #3DAB72', flexShrink: 0 }} />
+                    <span style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: '#3DAB72', letterSpacing: 1 }}>AVAILABLE FOR PROJECTS</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: '#888', margin: 0, textAlign: 'left' }}>Next availability: <strong style={{ color: '#ccc' }}>July 2026</strong></p>
+                </div>
+                <a
+                  href="mailto:ousauser@gmail.com?subject=Project Enquiry"
+                  style={{ padding: '10px 20px', background: '#3DAB72', border: 'none', borderRadius: 8, color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', textDecoration: 'none', whiteSpace: 'nowrap', fontFamily: "'DM Sans',sans-serif" }}
+                >
+                  Book a Call →
+                </a>
               </div>
             </div>
 

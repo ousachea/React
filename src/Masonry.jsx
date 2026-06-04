@@ -175,6 +175,7 @@ const Masonry = ({
           key={item.id}
           data-key={item.id}
           className="masonry-item-wrapper"
+          style={{ '--item-glow': item.glowColor || '#8B5CF6' }}
           onClick={() => onItemClick ? onItemClick(item) : window.open(item.url, '_blank', 'noopener')}
           onPointerMove={handlePointerMove}
           onMouseEnter={e => handleMouseEnter(e, item)}

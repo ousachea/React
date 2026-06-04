@@ -2839,6 +2839,7 @@ export default function Portfolio() {
               img: p.image,
               url: p.url,
               height: [800, 600, 700, 550, 750, 620, 680, 580, 720, 640][i % 10],
+              glowColor: p.accent,
             }))}
             ease="power3.out"
             duration={0.5}

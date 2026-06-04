@@ -24,13 +24,13 @@
   padding: 2px;
   background: conic-gradient(
     from var(--cursor-angle) at 50% 50%,
-    #8B5CF6 0%,
-    #c084fc 20%,
-    #a78bfa 40%,
+    var(--item-glow, #8B5CF6) 0%,
+    color-mix(in srgb, var(--item-glow, #8B5CF6) 60%, white) 20%,
+    color-mix(in srgb, var(--item-glow, #8B5CF6) 80%, white) 40%,
     transparent 55%,
     transparent 65%,
-    #a78bfa 80%,
-    #8B5CF6 100%
+    color-mix(in srgb, var(--item-glow, #8B5CF6) 80%, white) 80%,
+    var(--item-glow, #8B5CF6) 100%
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -54,10 +54,10 @@
   inset: -4px;
   border-radius: 14px;
   box-shadow:
-    0 0 0 1px rgba(139, 92, 246, 0.7),
-    0 0 16px 4px rgba(139, 92, 246, 0.8),
-    0 0 40px 8px rgba(139, 92, 246, 0.5),
-    0 0 80px 16px rgba(139, 92, 246, 0.25);
+    0 0 0 1px color-mix(in srgb, var(--item-glow, #8B5CF6) 70%, transparent),
+    0 0 16px 4px color-mix(in srgb, var(--item-glow, #8B5CF6) 80%, transparent),
+    0 0 40px 8px color-mix(in srgb, var(--item-glow, #8B5CF6) 50%, transparent),
+    0 0 80px 16px color-mix(in srgb, var(--item-glow, #8B5CF6) 25%, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;

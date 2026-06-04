@@ -1544,8 +1544,8 @@ function ExperienceItem({ e, i, isLast }) {
           glowRadius={36}
           glowIntensity={1.0}
         >
-          <div style={{ padding: '24px 28px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
+          <div className="exp-card-inner">
+            <div className="exp-card-header">
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: -0.3, margin: '0 0 4px', textAlign: 'left' }}>
                   <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{e.role}</GradientText>
@@ -1564,16 +1564,10 @@ function ExperienceItem({ e, i, isLast }) {
                   )}
                 </div>
               </div>
-              <span style={{
-                fontSize: 11,
-                fontFamily: "'DM Mono',monospace",
+              <span className="exp-period" style={{
                 color: ACCENT,
                 background: '#8B5CF611',
                 border: `1px solid ${ACCENT}33`,
-                padding: '4px 12px',
-                borderRadius: 99,
-                whiteSpace: 'nowrap',
-                flexShrink: 0,
               }}>
                 {e.period}
               </span>
@@ -1803,14 +1797,181 @@ const GLOBAL_CSS = `
   .hero-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(40px,5vw,80px);align-items:center;}
   @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}.hero-grid .pc-card-wrapper{display:none;}}
 
+  /* ── Experience cards ── */
+  .exp-card-inner{padding:24px 28px;}
+  .exp-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+  .exp-period{font-size:11px;font-family:'DM Mono',monospace;white-space:nowrap;flex-shrink:0;padding:4px 12px;border-radius:99px;}
+  @media(max-width:640px){
+    .exp-card-inner{padding:16px 18px;}
+    .exp-card-header{flex-direction:column;gap:8px;}
+    .exp-period{align-self:flex-start;}
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar-grid{display:grid;grid-template-columns:repeat(5,1fr);}
+  .stats-bar-item{padding:clamp(24px,4vw,36px) clamp(16px,2vw,28px);text-align:center;border-right:1px solid #1a1030;}
+  .stats-bar-item:last-child{border-right:none;}
+  @media(max-width:640px){
+    .stats-bar-grid{grid-template-columns:repeat(2,1fr);}
+    .stats-bar-item{border-right:none;border-bottom:1px solid #1a1030;padding:20px 12px;}
+    .stats-bar-item:nth-child(odd){border-right:1px solid #1a1030;}
+    .stats-bar-item:nth-last-child(1):nth-child(odd){grid-column:1/-1;border-right:none;}
+  }
+
+  /* ── Featured project card ── */
+  .featured-card{display:grid;grid-template-columns:1fr 1fr;cursor:pointer;}
+  .featured-card-img{border-radius:0 16px 16px 0;overflow:hidden;aspect-ratio:4/3;}
+  .featured-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  @media(max-width:700px){
+    .featured-card{grid-template-columns:1fr!important;}
+    .featured-card-img{border-radius:0 0 16px 16px!important;aspect-ratio:16/9;}
+    .featured-stats{gap:16px!important;}
+    .featured-stats p:first-child{font-size:18px!important;}
+  }
+
   /* ── Large screen (1440px+) ── */
   @media(min-width:1440px){
-
     .services-grid{grid-template-columns:repeat(4,1fr);}
     .process-grid{grid-template-columns:repeat(5,1fr);}
     .articles-grid{grid-template-columns:repeat(3,1fr);}
   }
 `;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ProcessFlow
+───────────────────────────────────────────────────────────────────────────── */
+function ProcessFlow() {
+  const [active, setActive] = useState(0);
+  const [animKey, setAnimKey] = useState(0);
+  const DURATION = 6000;
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActive(a => (a + 1) % PROCESS.length);
+      setAnimKey(k => k + 1);
+    }, DURATION);
+    return () => clearInterval(id);
+  }, []);
+
+  const step = PROCESS[active];
+
+  return (
+    <div>
+      {/* ── progress dots ── */}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
+        {PROCESS.map((s, i) => {
+          const isDone = i < active;
+          const isCurrent = i === active;
+          return (
+            <React.Fragment key={s.num}>
+              <button
+                onClick={() => { setActive(i); setAnimKey(k => k + 1); }}
+                style={{
+                  width: 36, height: 36, borderRadius: '50%',
+                  border: isCurrent ? '2px solid #a855f7' : isDone ? '2px solid rgba(139,92,246,0.45)' : '2px solid rgba(139,92,246,0.15)',
+                  background: isCurrent ? 'linear-gradient(135deg,#7c3aed,#a855f7)' : isDone ? 'rgba(139,92,246,0.18)' : 'transparent',
+                  color: isCurrent ? '#fff' : isDone ? '#a855f7' : '#444',
+                  fontSize: 11, fontFamily: "'DM Mono',monospace", fontWeight: 600,
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: isCurrent ? '0 0 16px #a855f755' : 'none',
+                  transition: 'all 0.4s ease', flexShrink: 0,
+                  padding: 0,
+                }}
+              >
+                {isDone
+                  ? <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3L11.5 4" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  : s.num}
+              </button>
+              {i < PROCESS.length - 1 && (
+                <div style={{ flex: 1, height: 2, background: 'rgba(139,92,246,0.1)', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'linear-gradient(90deg,#7c3aed,#a855f7)',
+                    transform: isDone ? 'scaleX(1)' : 'scaleX(0)',
+                    transformOrigin: 'left',
+                    transition: 'transform 0.6s ease',
+                  }} />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+
+      {/* ── spotlight card ── */}
+      <BorderGlow key={animKey} glowColor="270 70 75" colors={['#7c3aed','#a855f7','#c084fc','#818cf8']} borderRadius={20} glowRadius={48} glowIntensity={1.3}>
+      <div style={{
+        position: 'relative', overflow: 'hidden',
+        borderRadius: 20,
+        background: 'linear-gradient(135deg, rgba(139,92,246,0.07) 0%, rgba(99,102,241,0.04) 100%)',
+        padding: 'clamp(32px,5vw,56px) clamp(28px,5vw,56px)',
+        animation: 'spotlightIn 0.45s cubic-bezier(0.22,1,0.36,1)',
+      }}>
+        {/* ghost number */}
+        <div style={{
+          position: 'absolute', right: -10, top: -20,
+          fontSize: 'clamp(120px,18vw,200px)',
+          fontWeight: 900, fontFamily: "'Sora',sans-serif",
+          color: 'rgba(139,92,246,0.05)',
+          lineHeight: 1, userSelect: 'none', pointerEvents: 'none',
+          letterSpacing: -8,
+        }}>{step.num}</div>
+
+        {/* step tag */}
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          padding: '5px 12px', borderRadius: 99,
+          border: '1px solid rgba(139,92,246,0.25)',
+          background: 'rgba(139,92,246,0.1)',
+          marginBottom: 24,
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#a855f7', display: 'inline-block', animation: 'processRing 1.4s ease-out infinite' }} />
+          <span style={{ fontSize: 10, fontFamily: "'DM Mono',monospace", color: '#a855f7', letterSpacing: 2 }}>STEP {step.num}</span>
+        </div>
+
+        {/* title */}
+        <h3 style={{
+          fontSize: 'clamp(26px,4vw,42px)', fontWeight: 700,
+          color: '#f0f0f0', margin: '0 0 16px',
+          fontFamily: "'Sora',sans-serif", letterSpacing: -1,
+          maxWidth: '70%',
+        }}>{step.title}</h3>
+
+        {/* desc */}
+        <p style={{
+          fontSize: 15, color: '#777', lineHeight: 1.8,
+          margin: '0 0 32px', maxWidth: 540,
+        }}>{step.desc}</p>
+
+        {/* auto-advance progress bar */}
+        <div style={{ height: 2, background: 'rgba(139,92,246,0.12)', borderRadius: 2, overflow: 'hidden', maxWidth: 200 }}>
+          <div key={animKey} style={{
+            height: '100%',
+            background: 'linear-gradient(90deg,#7c3aed,#a855f7)',
+            borderRadius: 2,
+            animation: `processBar ${DURATION}ms linear forwards`,
+          }} />
+        </div>
+      </div>
+      </BorderGlow>
+
+      <style>{`
+        @keyframes spotlightIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes processBar {
+          from { width: 0%; }
+          to   { width: 100%; }
+        }
+        @keyframes processRing {
+          0%   { transform: scale(1);   opacity: 1; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Portfolio
@@ -2409,20 +2570,16 @@ export default function Portfolio() {
       {/* ── STATS BAR ── */}
       <div style={{ borderBottom: '1px solid #1a1030', borderTop: '1px solid #1a1030', background: 'rgba(139,92,246,0.04)' }}>
         <Inner>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '0', padding: '0' }}>
+          <div className="stats-bar-grid">
             {[
               { to: 8,  suffix: '+', label: 'Years Experience' },
               { to: 50, suffix: '+', label: 'Projects Delivered' },
               { to: 30, suffix: '+', label: 'Happy Clients' },
               { to: 12, suffix: '+', label: 'Countries Reached' },
               { to: 95, suffix: '%', label: 'On-Time Delivery' },
-            ].map(({ to, suffix, label }, i) => (
-              <div key={label} style={{
-                padding: 'clamp(24px,4vw,36px) clamp(16px,2vw,28px)',
-                borderRight: i < 4 ? '1px solid #1a1030' : 'none',
-                textAlign: 'center',
-              }}>
-                <p style={{ fontSize: 'clamp(28px,4vw,44px)', fontWeight: 700, color: ACCENT2, letterSpacing: -1, margin: '0 0 4px', fontFamily: "'Space Grotesk',sans-serif" }}>
+            ].map(({ to, suffix, label }) => (
+              <div key={label} className="stats-bar-item">
+                <p style={{ fontSize: 'clamp(26px,4vw,44px)', fontWeight: 700, color: ACCENT2, letterSpacing: -1, margin: '0 0 4px', fontFamily: "'Space Grotesk',sans-serif" }}>
                   <CountUp from={0} to={to} duration={2} delay={0.2} />{suffix}
                 </p>
                 <p style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace", letterSpacing: 1, margin: 0 }}>{label}</p>
@@ -2611,19 +2768,16 @@ export default function Portfolio() {
           {/* Featured project */}
           {(() => { const fp = PROJECTS.find(p => p.id === 2)!; return (
             <BorderGlow glowColor={fp.glowColor} colors={fp.colors} borderRadius={16} glowRadius={44} glowIntensity={1.2}>
-              <div
-                onClick={() => setOpenCase(fp.id)}
-                style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', cursor: 'pointer', minHeight: 260 }}
-              >
-                <div style={{ padding: 'clamp(24px,4vw,40px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div onClick={() => setOpenCase(fp.id)} className="featured-card">
+                <div style={{ padding: 'clamp(20px,4vw,40px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 20 }}>
                   <div>
                     <span style={{ display: 'inline-block', fontSize: 11, fontFamily: "'DM Mono',monospace", color: fp.accent, letterSpacing: 1, border: `1px solid ${fp.accent}44`, padding: '3px 10px', borderRadius: 99, marginBottom: 16 }}>⭐ FEATURED · {fp.tag}</span>
-                    <h3 style={{ fontSize: 'clamp(22px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 12px', color: '#e8e8e8' }}>
+                    <h3 style={{ fontSize: 'clamp(20px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 10px', color: '#e8e8e8' }}>
                       <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{fp.title}</GradientText>
                     </h3>
-                    <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: '0 0 24px' }}>{fp.desc}</p>
+                    <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: 0 }}>{fp.desc}</p>
                   </div>
-                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                  <div className="featured-stats" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                     {[['Global','Audience Reach'],['A11Y','Accessible'],['100%','Brand Compliant']].map(([n,l]) => (
                       <div key={l}>
                         <p style={{ fontSize: 22, fontWeight: 700, color: fp.accent, margin: '0 0 2px', fontFamily: "'Space Grotesk',sans-serif" }}>{n}</p>
@@ -2632,8 +2786,8 @@ export default function Portfolio() {
                     ))}
                   </div>
                 </div>
-                <div style={{ borderRadius: '0 16px 16px 0', overflow: 'hidden' }}>
-                  <img src={fp.image} alt={fp.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'grayscale(40%)', transition: 'filter .4s ease' }}
+                <div className="featured-card-img">
+                  <img src={fp.image} alt={fp.title} style={{ filter: 'grayscale(40%)', transition: 'filter .4s ease' }}
                     onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0%)'}
                     onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(40%)'}
                   />
@@ -2695,66 +2849,7 @@ export default function Portfolio() {
             At every stage I prioritise user research and testing to ensure the
             end result meets the needs of your audience.
           </p>
-          <div className="process-grid">
-            {PROCESS.map((step, i) => (
-              <BorderGlow
-                key={step.num}
-                glowColor="270 70 75"
-                colors={['#c084fc', '#818cf8', '#6366f1']}
-                borderRadius={14}
-                glowRadius={32}
-                glowIntensity={1.0}
-              >
-                <div style={{ padding: '24px' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 12,
-                      marginBottom: 14,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 11,
-                        fontFamily: "'DM Mono',monospace",
-                        color: ACCENT,
-                        letterSpacing: 1,
-                        background: '#8B5CF611',
-                        border: `1px solid ${ACCENT}33`,
-                        padding: '3px 10px',
-                        borderRadius: 99,
-                      }}
-                    >
-                      {step.num}
-                    </span>
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: 16,
-                      fontWeight: 600,
-                      color: '#e8e8e8',
-                      margin: '0 0 10px',
-                      textAlign: 'left',
-                    }}
-                  >
-                    <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{step.title}</GradientText>
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: '#666',
-                      lineHeight: 1.7,
-                      margin: 0,
-                      textAlign: 'left',
-                    }}
-                  >
-                    {step.desc}
-                  </p>
-                </div>
-              </BorderGlow>
-            ))}
-          </div>
+          <ProcessFlow />
         </Inner>
       </Section>
 

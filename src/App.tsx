@@ -437,16 +437,31 @@ function CardNav({
       <nav
         ref={navRef}
         style={{
-          background: 'rgba(13,11,24,0.72)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '.5px solid rgba(139,92,246,0.25)',
+          background: 'rgba(10,8,20,0.65)',
+          backdropFilter: 'blur(28px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(28px) saturate(180%)',
           borderRadius: 14,
-          boxShadow: '0 4px 32px rgba(0,0,0,.5)',
           overflow: 'hidden',
           position: 'relative',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
+          // animated glow via pseudo handled below via style tag
         }}
       >
+        {/* border glow ring */}
+        <div style={{
+          position: 'absolute', inset: 0, borderRadius: 14, pointerEvents: 'none', zIndex: 0,
+          background: 'linear-gradient(135deg, rgba(139,92,246,0.22) 0%, rgba(168,85,247,0.08) 40%, rgba(99,102,241,0.18) 100%)',
+          WebkitMaskImage: 'linear-gradient(#fff 0 0)',
+          maskImage: 'linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'destination-in',
+          maskComposite: 'exclude',
+        }} />
+        {/* top highlight line */}
+        <div style={{
+          position: 'absolute', top: 0, left: '10%', right: '10%', height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.6), rgba(139,92,246,0.4), transparent)',
+          borderRadius: 1, pointerEvents: 'none', zIndex: 1,
+        }} />
         <div
           style={{
             position: 'relative',
@@ -549,13 +564,20 @@ function CardNav({
           }}
         >
           {items.slice(0, 3).map((item, idx) => (
-            <div
+            <BorderGlow
               key={idx}
+              glowColor={item.glowColor || '270 70 75'}
+              colors={item.colors || ['#c084fc','#a855f7','#818cf8']}
+              borderRadius={10}
+              glowRadius={36}
+              glowIntensity={1.1}
+              style={{ flex: '1 1 180px' }}
+            >
+            <div
               ref={(el) => {
                 if (el) cardRefs.current[idx] = el;
               }}
               style={{
-                flex: '1 1 180px',
                 borderRadius: 10,
                 background: item.bgColor || '#120f1e',
                 color: item.textColor || '#e8e8e8',
@@ -628,6 +650,7 @@ function CardNav({
                 ))}
               </div>
             </div>
+            </BorderGlow>
           ))}
         </div>
       </nav>
@@ -695,6 +718,7 @@ function BorderGlow({
   edgeSensitivity = 28,
   colors = ['#c084fc', '#818cf8', '#38bdf8'],
   className = '',
+  style = {},
 }) {
   const ref = useRef(null);
   const onMove = useCallback((e) => {
@@ -733,6 +757,7 @@ function BorderGlow({
         '--cone-spread': coneSpread,
         ...buildGlowVars(glowColor, glowIntensity),
         ...buildGradVars(colors),
+        ...style,
       }}
     >
       <span className="egl" />
@@ -2248,6 +2273,8 @@ export default function Portfolio() {
             label: 'About',
             bgColor: '#120f1e',
             textColor: '#e8e8e8',
+            glowColor: '270 70 75',
+            colors: ['#c084fc','#a855f7','#818cf8'],
             links: [
               { label: 'My Story', onClick: () => scrollTo('About') },
               { label: 'Experience', onClick: () => scrollTo('Experience') },
@@ -2258,6 +2285,8 @@ export default function Portfolio() {
             label: 'Work',
             bgColor: '#0f0c1e',
             textColor: '#e8e8e8',
+            glowColor: '239 80 70',
+            colors: ['#818cf8','#6366f1','#a855f7'],
             links: [
               { label: 'Projects', onClick: () => scrollTo('Projects') },
               { label: 'The Process', onClick: () => scrollTo('Process') },
@@ -2267,6 +2296,8 @@ export default function Portfolio() {
             label: 'Contact',
             bgColor: '#130f20',
             textColor: '#e8e8e8',
+            glowColor: '285 70 70',
+            colors: ['#e879f9','#c084fc','#a855f7'],
             links: [
               { label: 'Get in Touch', onClick: () => scrollTo('Contact') },
               { label: 'ousauser@gmail.com', onClick: () => { } },
@@ -2453,8 +2484,9 @@ export default function Portfolio() {
                   Get in Touch
                 </button>
                 <a
-                  href="/Ousa-Chea-CV.pdf"
-                  download
+                  href="https://docs.google.com/document/d/1kK5ZYjNTGsi6jTMbDPiRSSvDL8-HFjlQ8ARp3xZtlXE/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     padding: '14px 24px',
                     background: 'transparent',

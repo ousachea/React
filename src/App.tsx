@@ -2805,7 +2805,7 @@ export default function Portfolio() {
                   <div>
                     <span style={{ display: 'inline-block', fontSize: 11, fontFamily: "'DM Mono',monospace", color: fp.accent, letterSpacing: 1, border: `1px solid ${fp.accent}44`, padding: '3px 10px', borderRadius: 99, marginBottom: 16 }}>⭐ FEATURED · {fp.tag}</span>
                     <h3 style={{ fontSize: 'clamp(20px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 10px', color: '#e8e8e8' }}>
-                      <GradientText colors={['#7c3aed','#a855f7','#c084fc','#a855f7','#7c3aed']} animationSpeed={8} pauseOnHover>{fp.title}</GradientText>
+                      <GradientText colors={[...fp.colors, ...fp.colors.slice().reverse(), fp.colors[0]]} animationSpeed={8} pauseOnHover>{fp.title}</GradientText>
                     </h3>
                     <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: 0 }}>{fp.desc}</p>
                   </div>

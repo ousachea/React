@@ -2933,26 +2933,25 @@ export default function Portfolio() {
           {/* Certifications strip */}
           <div style={{ marginTop: 48 }}>
             <p style={{ fontSize: 11, color: '#333', fontFamily: "'DM Mono',monospace", letterSpacing: 2, margin: '0 0 16px', textAlign: 'left' }}>CERTIFIED &amp; ACCREDITED</p>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {[
-                { name: 'PMP®', body: 'Project Management Institute', color: '#f87171' },
-                { name: 'CSM®', body: 'Scrum Alliance', color: '#34d399' },
-                { name: 'Google UX Design', body: 'Google / Coursera', color: '#38bdf8' },
-                { name: 'Webflow Expert 95%', body: 'Webflow University', color: '#c084fc' },
-                { name: 'Uxcel UX Design', body: 'Uxcel', color: '#a78bfa' },
-              ].map(({ name, body, color }) => (
-                <div key={name} style={{
-                  padding: '10px 16px',
-                  borderRadius: 10,
-                  border: `1px solid ${color}33`,
-                  background: `${color}0d`,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 3,
-                }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color, fontFamily: "'Space Grotesk',sans-serif" }}>{name}</span>
-                  <span style={{ fontSize: 10, color: '#444', fontFamily: "'DM Mono',monospace" }}>{body}</span>
-                </div>
+                { name: 'Google UX Design', body: 'Google / Coursera', color: '#38bdf8', glowColor: '199 89 80', colors: ['#38bdf8','#7dd3fc','#0ea5e9'] },
+                { name: 'Webflow Expert 95%', body: 'Webflow University', color: '#c084fc', glowColor: '270 70 75', colors: ['#c084fc','#a855f7','#818cf8'] },
+                { name: 'Uxcel UX Design', body: 'Uxcel', color: '#a78bfa', glowColor: '255 65 70', colors: ['#a78bfa','#c084fc','#7c3aed'] },
+              ].map(({ name, body, color, glowColor, colors }) => (
+                <BorderGlow key={name} glowColor={glowColor} colors={colors} borderRadius={12} glowRadius={28} glowIntensity={1.1}>
+                  <div style={{
+                    padding: '12px 18px',
+                    background: `${color}0a`,
+                    borderRadius: 12,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 4,
+                  }}>
+                    <span style={{ fontSize: 13, fontWeight: 600, color, fontFamily: "'Space Grotesk',sans-serif" }}>{name}</span>
+                    <span style={{ fontSize: 10, color: '#555', fontFamily: "'DM Mono',monospace" }}>{body}</span>
+                  </div>
+                </BorderGlow>
               ))}
             </div>
           </div>

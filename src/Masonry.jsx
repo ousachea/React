@@ -42,9 +42,9 @@ const Masonry = ({
   onItemClick = null,
 }) => {
   const columns = useMedia(
-    ['(min-width:1200px)', '(min-width:800px)', '(min-width:500px)'],
-    [3, 2, 2],
-    1
+    ['(min-width:1024px)', '(min-width:640px)'],
+    [4, 3],
+    2
   );
 
   const [containerRef, { width }] = useMeasure();
@@ -94,7 +94,7 @@ const Masonry = ({
     const colHeights = new Array(columns).fill(0);
     const columnWidth = (width - GAP * (columns - 1)) / columns;
 
-    return items.map(child => {
+    const placed = items.map(child => {
       const col = colHeights.indexOf(Math.min(...colHeights));
       const x = col * (columnWidth + GAP);
       const dims = imageDims[child.id] || { w: 4, h: 3 };
@@ -106,6 +106,20 @@ const Masonry = ({
       colHeights[col] += height + GAP;
       return { ...child, x, y, w: columnWidth, h: height };
     });
+
+    // Center any partial last row
+    if (placed.length > 0) {
+      const totalH = Math.max(...placed.map(i => i.y + i.h));
+      const lastRow = placed.filter(i => totalH - (i.y + i.h) < columnWidth * 1.5);
+      if (lastRow.length > 0 && lastRow.length < columns) {
+        const sorted = [...lastRow].sort((a, b) => a.x - b.x);
+        const rowW = sorted.length * columnWidth + (sorted.length - 1) * GAP;
+        const offset = (width - rowW) / 2;
+        sorted.forEach((item, i) => { item.x = offset + i * (columnWidth + GAP); });
+      }
+    }
+
+    return placed;
   }, [columns, items, width, imageDims]);
 
   const hasMounted = useRef(false);

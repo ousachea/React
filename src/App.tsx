@@ -2474,136 +2474,33 @@ export default function Portfolio() {
                 <strong style={{ color: '#ccc' }}>Phnom Penh, Cambodia</strong>,
                 I've spent 8+ years managing and shipping digital products across banking, NGOs, and hospitality — owning the full lifecycle from stakeholder alignment and sprint planning through to design, dev, and go-live.
               </p>
-              <div
-                style={{
-                  display: 'flex',
-                  gap: 'clamp(24px,5vw,48px)',
-                  flexWrap: 'wrap',
-                }}
-              >
-                {[
-                  { to: 8, suffix: '+', label: 'Years Experience' },
-                  { to: 20, suffix: '+', label: 'Projects Delivered' },
-                  { to: 3, suffix: '', label: 'Industries' },
-                ].map(({ to, suffix, label }) => (
-                  <div key={label}>
-                    <p
-                      style={{
-                        fontSize: 36,
-                        fontWeight: 700,
-                        color: ACCENT2,
-                        letterSpacing: -1,
-                        margin: '0 0 4px',
-                        textAlign: 'left',
-                        fontFamily: "'Sora',sans-serif",
-                      }}
-                    >
-                      <CountUp from={0} to={to} duration={2} delay={0.2} />
-                      {suffix}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: '#555',
-                        fontFamily: "'DM Mono',monospace",
-                        margin: 0,
-                        textAlign: 'left',
-                      }}
-                    >
-                      {label}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Highlight cards */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 12,
-              }}
-            >
-              {[
-                {
-                  icon: '🏦',
-                  title: 'Digital Banking',
-                  desc: 'Mobile Banking rollouts at Canadia Bank — from design to go-live.',
-                  glowColor: '270 70 75',
-                  colors: ['#c084fc', '#818cf8', '#6366f1'],
-                },
-                {
-                  icon: '🌐',
-                  title: 'Webflow Expert',
-                  desc: '95% certified. Built sites for UNDP, GIZ & ILO.',
-                  glowColor: '239 68 68',
-                  colors: ['#818cf8', '#6366f1', '#c084fc'],
-                },
-                {
-                  icon: '📐',
-                  title: 'UX Strategy',
-                  desc: 'Research, wireframes & user testing across 3 industries.',
-                  glowColor: '285 70 70',
-                  colors: ['#e879f9', '#c084fc', '#818cf8'],
-                },
-                {
-                  icon: '🚀',
-                  title: 'Agile PM',
-                  desc: 'Zero scope creep. On-time delivery. Stakeholder NPS 9/10.',
-                  glowColor: '200 80 65',
-                  colors: ['#38bdf8', '#818cf8', '#c084fc'],
-                },
-              ].map(({ icon, title, desc, glowColor, colors }) => (
-                <BorderGlow
-                  key={title}
-                  glowColor={glowColor}
-                  colors={colors}
-                  borderRadius={14}
-                  glowRadius={32}
-                  glowIntensity={1.1}
-                >
-                  <div style={{ padding: '20px' }}>
-                    <span
-                      style={{ fontSize: 24, display: 'block', marginBottom: 8 }}
-                    >
-                      {icon}
-                    </span>
-                    <p
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: '#e8e8e8',
-                        margin: '0 0 4px',
-                        textAlign: 'left',
-                      }}
-                    >
-                      {title}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: '#555',
-                        lineHeight: 1.5,
-                        margin: 0,
-                        textAlign: 'left',
-                      }}
-                    >
-                      {desc}
-                    </p>
-                  </div>
-                </BorderGlow>
-              ))}
-            </div>
-
             {/* Currently building */}
-            <BorderGlow glowColor="160 70 50" colors={['#34d399','#10b981','#38bdf8']} borderRadius={14} glowRadius={28} glowIntensity={1.0}>
-              <div style={{ padding: '20px 22px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>⚡</span>
-                <div>
-                  <p style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: '#34d399', letterSpacing: 1, margin: '0 0 6px' }}>CURRENTLY BUILDING</p>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: '#e8e8e8', margin: '0 0 4px', textAlign: 'left' }}>Personal Portfolio v2</p>
-                  <p style={{ fontSize: 12, color: '#555', lineHeight: 1.5, margin: 0, textAlign: 'left' }}>React + Vite · Shipping Jun 2026</p>
+            <BorderGlow glowColor="160 70 50" colors={['#34d399','#10b981','#38bdf8']} borderRadius={16} glowRadius={32} glowIntensity={1.2}>
+              <div style={{ padding: '28px 26px', background: 'linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(16,185,129,0.03) 100%)', borderRadius: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16, padding: '4px 10px', borderRadius: 20, background: 'rgba(52,211,153,0.1)', border: '1px solid rgba(52,211,153,0.2)' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d399', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+                  <span style={{ fontSize: 10, fontFamily: "'DM Mono',monospace", color: '#34d399', letterSpacing: 2, textTransform: 'uppercase' }}>Currently Building</span>
+                </div>
+                <span style={{ fontSize: 22, marginBottom: 10 }}>⚡</span>
+                <p style={{ fontSize: 18, fontWeight: 700, color: '#f0f0f0', margin: '0 0 4px', letterSpacing: -0.4, fontFamily: "'Sora',sans-serif" }}>Nuxt Tool</p>
+                <p style={{ fontSize: 12, color: '#444', margin: '0 0 20px', fontFamily: "'DM Mono',monospace" }}>Nuxt 3 · Netlify · Personal Project</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
+                  {[
+                    { href: 'https://ousanuxt3.netlify.app/', label: 'ousanuxt3.netlify.app' },
+                    { href: 'https://ousanuxt2.netlify.app/', label: 'ousanuxt2.netlify.app' },
+                  ].map(({ href, label }) => (
+                    <a key={href} href={href} target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '11px 14px', borderRadius: 10, background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(52,211,153,0.16)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'rgba(52,211,153,0.08)')}
+                    >
+                      <span style={{ fontSize: 13, color: '#34d399', fontFamily: "'DM Mono',monospace" }}>{label}</span>
+                      <span style={{ fontSize: 13, color: '#34d399' }}>↗</span>
+                    </a>
+                  ))}
                 </div>
               </div>
             </BorderGlow>

@@ -1845,11 +1845,11 @@ const GLOBAL_CSS = `
 
   /* ── Featured project card ── */
   .featured-card{display:grid;grid-template-columns:1fr 1fr;cursor:pointer;}
-  .featured-card-img{border-radius:0 16px 16px 0;overflow:hidden;aspect-ratio:4/3;}
+  .featured-card-img{border-radius:0 16px 16px 0;overflow:hidden;min-height:260px;}
   .featured-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
   @media(max-width:700px){
     .featured-card{grid-template-columns:1fr!important;}
-    .featured-card-img{border-radius:0 0 16px 16px!important;aspect-ratio:16/9;}
+    .featured-card-img{border-radius:0 0 16px 16px!important;min-height:unset;aspect-ratio:16/9;}
     .featured-stats{gap:16px!important;}
     .featured-stats p:first-child{font-size:18px!important;}
   }

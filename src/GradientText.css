@@ -1,3 +1,8 @@
+@keyframes gradient-shift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
 .animated-gradient-text {
   position: relative;
   margin: 0;
@@ -8,7 +13,6 @@
   justify-content: center;
   border-radius: 0;
   font-weight: inherit;
-  backdrop-filter: blur(10px);
   transition: box-shadow 0.5s ease-out;
   overflow: hidden;
   cursor: pointer;
@@ -50,4 +54,22 @@
   font-weight: inherit;
   line-height: inherit;
   letter-spacing: inherit;
+}
+
+.gradient-animate {
+  animation-name: gradient-shift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.gradient-animate.gradient-pause-hover:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-animate {
+    animation: none;
+    background-position: 0% 50%;
+  }
 }

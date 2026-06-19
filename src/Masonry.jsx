@@ -56,19 +56,6 @@ const Masonry = ({
   });
   const imagesReady = true;
 
-  // Update dims as each image loads — grid reflows naturally
-  useEffect(() => {
-    items.forEach(item => {
-      const img = new Image();
-      img.src = item.img;
-      img.onload = () => {
-        setImageDims(prev => ({
-          ...prev,
-          [item.id]: { w: img.naturalWidth, h: img.naturalHeight },
-        }));
-      };
-    });
-  }, [items]);
 
   const getInitialPosition = item => {
     const containerRect = containerRef.current?.getBoundingClientRect();

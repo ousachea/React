@@ -16,6 +16,8 @@ import GradientText from './GradientText';
 
 gsap.registerPlugin(InertiaPlugin);
 
+const IS_TOUCH = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
 /* ─────────────────────────────────────────────────────────────────────────────
    CountUp — animated number counter (inline, no separate file)
 ───────────────────────────────────────────────────────────────────────────── */
@@ -198,32 +200,37 @@ function DotGrid({
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const { x: px, y: py } = ptr.current;
+      const r = dotSize / 2;
+
+      // Batch base-color dots into one path — avoids save/restore per dot
+      ctx.fillStyle = baseColor;
+      ctx.beginPath();
+      const active = [];
       for (const d of dotsRef.current) {
-        const ox = d.cx + d.xOffset,
-          oy = d.cy + d.yOffset;
-        const dx = d.cx - px,
-          dy = d.cy - py,
-          dsq = dx * dx + dy * dy;
-        let fs = baseColor;
-        if (dsq <= proxSq) {
-          const t = 1 - Math.sqrt(dsq) / proximity;
-          fs = `rgb(${Math.round(
-            baseRgb.r + (activeRgb.r - baseRgb.r) * t
-          )},${Math.round(
-            baseRgb.g + (activeRgb.g - baseRgb.g) * t
-          )},${Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t)})`;
+        const dx = d.cx - px, dy = d.cy - py;
+        if (dx * dx + dy * dy <= proxSq) {
+          active.push(d);
+        } else {
+          ctx.moveTo(d.cx + d.xOffset + r, d.cy + d.yOffset);
+          ctx.arc(d.cx + d.xOffset, d.cy + d.yOffset, r, 0, Math.PI * 2);
         }
-        ctx.save();
-        ctx.translate(ox, oy);
-        ctx.fillStyle = fs;
-        ctx.fill(path);
-        ctx.restore();
+      }
+      ctx.fill();
+
+      // Draw only the few proximity-affected dots individually
+      for (const d of active) {
+        const dx = d.cx - px, dy = d.cy - py;
+        const t = 1 - Math.sqrt(dx * dx + dy * dy) / proximity;
+        ctx.fillStyle = `rgb(${Math.round(baseRgb.r + (activeRgb.r - baseRgb.r) * t)},${Math.round(baseRgb.g + (activeRgb.g - baseRgb.g) * t)},${Math.round(baseRgb.b + (activeRgb.b - baseRgb.b) * t)})`;
+        ctx.beginPath();
+        ctx.arc(d.cx + d.xOffset, d.cy + d.yOffset, r, 0, Math.PI * 2);
+        ctx.fill();
       }
       raf = requestAnimationFrame(tick);
     };
     tick();
     return () => cancelAnimationFrame(raf);
-  }, [proximity, baseColor, activeRgb, baseRgb, path]);
+  }, [proximity, baseColor, activeRgb, baseRgb, dotSize]);
 
   useEffect(() => {
     buildGrid();
@@ -345,6 +352,7 @@ function DotGrid({
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
+            willChange: 'transform',
           }}
         />
       </div>
@@ -564,20 +572,13 @@ function CardNav({
           }}
         >
           {items.slice(0, 3).map((item, idx) => (
-            <BorderGlow
-              key={idx}
-              glowColor={item.glowColor || '270 70 75'}
-              colors={item.colors || ['#c084fc','#a855f7','#818cf8']}
-              borderRadius={10}
-              glowRadius={36}
-              glowIntensity={1.1}
-              style={{ flex: '1 1 180px' }}
-            >
             <div
+              key={idx}
               ref={(el) => {
                 if (el) cardRefs.current[idx] = el;
               }}
               style={{
+                flex: '1 1 180px',
                 borderRadius: 10,
                 background: item.bgColor || '#120f1e',
                 color: item.textColor || '#e8e8e8',
@@ -586,6 +587,7 @@ function CardNav({
                 flexDirection: 'column',
                 gap: 8,
                 minHeight: 172,
+                border: '1px solid rgba(255,255,255,0.06)',
               }}
             >
               <span
@@ -650,7 +652,6 @@ function CardNav({
                 ))}
               </div>
             </div>
-            </BorderGlow>
           ))}
         </div>
       </nav>
@@ -1766,7 +1767,6 @@ function FaqItem({ q, a }) {
    Global CSS
 ───────────────────────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
   *,*::before,*::after{box-sizing:border-box;}
   html{scroll-snap-type:y proximity;scroll-padding-top:64px;}
   html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important;background:#080810!important;}
@@ -2051,6 +2051,7 @@ export default function Portfolio() {
 
   const lenisRef = useRef<Lenis | null>(null);
   useEffect(() => {
+    if (IS_TOUCH) return;
     const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
     lenisRef.current = lenis;
     let rafId: number;
@@ -2318,17 +2319,19 @@ export default function Portfolio() {
           width: '100%',
         }}
       >
-        <DotGrid
-          dotSize={6}
-          gap={22}
-          baseColor="#2a1f50"
-          activeColor="#c084fc"
-          proximity={140}
-          shockRadius={280}
-          shockStrength={6}
-          resistance={750}
-          returnDuration={1.5}
-        />
+        {!IS_TOUCH && (
+          <DotGrid
+            dotSize={6}
+            gap={22}
+            baseColor="#2a1f50"
+            activeColor="#c084fc"
+            proximity={140}
+            shockRadius={280}
+            shockStrength={6}
+            resistance={750}
+            returnDuration={1.5}
+          />
+        )}
         <div
           style={{
             position: 'absolute',
@@ -2513,19 +2516,14 @@ export default function Portfolio() {
             {/* Right — profile card */}
             <ProfileCard
               avatarUrl="https://media.licdn.com/dms/image/v2/D5603AQFlf_kv3pQYKw/profile-displayphoto-shrink_800_800/B56ZWi8ZOmGQAc-/0/1742195498963?e=1781136000&v=beta&t=s-JA6nbi8dWH7D8JbrVmRrnltrcOz9vpXBC8PTNkXAY"
-              iconUrl="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='2' fill='white'/%3E%3C/svg%3E"
               name=""
               title="PM · UX/UI · Web Design"
               handle="ousachea"
               status="Available for projects"
               contactText="Hire Me"
               showUserInfo={true}
-              enableTilt={true}
-              enableMobileTilt={false}
-              behindGlowEnabled={true}
-              behindGlowColor="rgba(139, 92, 246, 0.55)"
-              behindGlowSize="55%"
-              innerGradient="linear-gradient(145deg,#2a1050cc 0%,#8B5CF644 100%)"
+              enableTilt={false}
+              behindGlowEnabled={false}
               onContactClick={() => document.getElementById('Contact')?.scrollIntoView({ behavior: 'smooth' })}
             />
           </div>
@@ -2797,60 +2795,45 @@ export default function Portfolio() {
             Hover to illuminate · Click to read the case study →
           </p>
 
-          {/* Featured project */}
-          {(() => { const fp = PROJECTS.find(p => p.id === 2)!; return (
-            <BorderGlow glowColor={fp.glowColor} colors={fp.colors} borderRadius={16} glowRadius={44} glowIntensity={1.2}>
-              <div onClick={() => setOpenCase(fp.id)} className="featured-card">
-                <div style={{ padding: 'clamp(20px,4vw,40px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 20 }}>
-                  <div>
-                    <span style={{ display: 'inline-block', fontSize: 11, fontFamily: "'DM Mono',monospace", color: fp.accent, letterSpacing: 1, border: `1px solid ${fp.accent}44`, padding: '3px 10px', borderRadius: 99, marginBottom: 16 }}>⭐ FEATURED · {fp.tag}</span>
-                    <h3 style={{ fontSize: 'clamp(20px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 10px', color: '#e8e8e8' }}>
-                      <GradientText colors={[...fp.colors, ...fp.colors.slice().reverse(), fp.colors[0]]} animationSpeed={8} pauseOnHover>{fp.title}</GradientText>
-                    </h3>
-                    <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: 0 }}>{fp.desc}</p>
-                  </div>
-                  <div className="featured-stats" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-                    {[['Global','Audience Reach'],['A11Y','Accessible'],['100%','Brand Compliant']].map(([n,l]) => (
-                      <div key={l}>
-                        <p style={{ fontSize: 22, fontWeight: 700, color: fp.accent, margin: '0 0 2px', fontFamily: "'Space Grotesk',sans-serif" }}>{n}</p>
-                        <p style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace", margin: 0 }}>{l}</p>
+          {/* 3 featured projects */}
+          {([
+            { id: 2,  stats: [['Global','Audience Reach'],['A11Y','Accessible'],['100%','Brand Compliant']] },
+            { id: 11, stats: [['Multi','Property Site'],['Self','Managed CMS'],['100%','Brand Aligned']] },
+            { id: 19, stats: [['Pixel','Perfect Build'],['Fast','Load Times'],['Award','Industry Praise']] },
+          ] as { id: number; stats: [string, string][] }[]).map(({ id, stats }) => {
+            const fp = PROJECTS.find(p => p.id === id)!;
+            return (
+              <div key={id} style={{ marginBottom: 24 }}>
+                <BorderGlow glowColor={fp.glowColor} colors={fp.colors} borderRadius={16} glowRadius={44} glowIntensity={1.2}>
+                  <div onClick={() => setOpenCase(fp.id)} className="featured-card">
+                    <div style={{ padding: 'clamp(20px,4vw,40px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 20 }}>
+                      <div>
+                        <span style={{ display: 'inline-block', fontSize: 11, fontFamily: "'DM Mono',monospace", color: fp.accent, letterSpacing: 1, border: `1px solid ${fp.accent}44`, padding: '3px 10px', borderRadius: 99, marginBottom: 16 }}>⭐ FEATURED · {fp.tag}</span>
+                        <h3 style={{ fontSize: 'clamp(20px,3vw,32px)', fontWeight: 700, letterSpacing: -1, margin: '0 0 10px', color: fp.accent }}>
+                          {fp.title}
+                        </h3>
+                        <p style={{ fontSize: 14, color: '#666', lineHeight: 1.7, margin: 0 }}>{fp.desc}</p>
                       </div>
-                    ))}
+                      <div className="featured-stats" style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                        {stats.map(([n, l]) => (
+                          <div key={l}>
+                            <p style={{ fontSize: 22, fontWeight: 700, color: fp.accent, margin: '0 0 2px', fontFamily: "'Space Grotesk',sans-serif" }}>{n}</p>
+                            <p style={{ fontSize: 11, color: '#444', fontFamily: "'DM Mono',monospace", margin: 0 }}>{l}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="featured-card-img">
+                      <img src={fp.image} alt={fp.title} decoding="async" loading="lazy" style={{ filter: 'grayscale(40%)', transition: 'filter .4s ease' }}
+                        onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0%)'}
+                        onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(40%)'}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="featured-card-img">
-                  <img src={fp.image} alt={fp.title} style={{ filter: 'grayscale(40%)', transition: 'filter .4s ease' }}
-                    onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0%)'}
-                    onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(40%)'}
-                  />
-                </div>
+                </BorderGlow>
               </div>
-            </BorderGlow>
-          ); })()}
-
-          <div style={{ margin: '40px 0 12px', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: '#333', letterSpacing: 2 }}>MORE PROJECTS</span>
-            <div style={{ flex: 1, height: 1, background: '#1a1030' }} />
-          </div>
-
-          <Masonry
-            items={PROJECTS.filter(p => p.id !== 2).map((p, i) => ({
-              id: String(p.id),
-              img: p.image,
-              url: p.url,
-              height: [800, 600, 700, 550, 750, 620, 680, 580, 720, 640][i % 10],
-              glowColor: p.accent,
-            }))}
-            ease="power3.out"
-            duration={0.5}
-            stagger={0.04}
-            animateFrom="bottom"
-            scaleOnHover={true}
-            hoverScale={0.97}
-            blurToFocus={true}
-            colorShiftOnHover={false}
-            onItemClick={(item) => setOpenCase(Number(item.id))}
-          />
+            );
+          })}
         </Inner>
       </Section>
 

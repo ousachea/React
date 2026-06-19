@@ -2515,7 +2515,7 @@ export default function Portfolio() {
 
             {/* Right — profile card */}
             <ProfileCard
-              avatarUrl="https://media.licdn.com/dms/image/v2/D5603AQFlf_kv3pQYKw/profile-displayphoto-shrink_800_800/B56ZWi8ZOmGQAc-/0/1742195498963?e=1781136000&v=beta&t=s-JA6nbi8dWH7D8JbrVmRrnltrcOz9vpXBC8PTNkXAY"
+              avatarUrl="/profile.jpg"
               name=""
               title="PM · UX/UI · Web Design"
               handle="ousachea"

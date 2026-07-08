@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from 'next/navigation';
 
 const ACCENT = '#8B5CF6';
 const ACCENT2 = '#A78BFA';
@@ -164,7 +166,7 @@ const tagColor: Record<string, string> = {
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const article = ARTICLES.find(a => a.slug === slug);
 
   useEffect(() => {
@@ -210,7 +212,7 @@ export default function ArticlePage() {
       <div style={{ minHeight: '100vh', background: '#080810', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
           <p style={{ color: '#555', marginBottom: 24 }}>Article not found.</p>
-          <button onClick={() => navigate('/')} style={{ color: ACCENT, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14 }}>
+          <button onClick={() => router.push('/')} style={{ color: ACCENT, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14 }}>
             ← Back to home
           </button>
         </div>
@@ -227,7 +229,7 @@ export default function ArticlePage() {
       <div style={{ position: 'sticky', top: 0, zIndex: 100, background: 'rgba(8,8,16,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1a1030' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '14px clamp(20px,5vw,40px)', display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => router.push('/')}
             style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: 13, fontFamily: "'DM Mono',monospace", display: 'flex', alignItems: 'center', gap: 6, padding: 0, transition: 'color .2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = ACCENT2)}
             onMouseLeave={e => (e.currentTarget.style.color = '#555')}
@@ -299,7 +301,7 @@ export default function ArticlePage() {
                 {otherArticles.map(a => (
                   <button
                     key={a.slug}
-                    onClick={() => navigate(`/articles/${a.slug}`)}
+                    onClick={() => router.push(`/articles/${a.slug}`)}
                     style={{ background: 'none', border: '1px solid #1a1030', borderRadius: 10, padding: '16px 20px', cursor: 'pointer', textAlign: 'left', transition: 'border-color .2s' }}
                     onMouseEnter={e => (e.currentTarget.style.borderColor = ACCENT + '44')}
                     onMouseLeave={e => (e.currentTarget.style.borderColor = '#1a1030')}

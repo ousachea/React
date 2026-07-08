@@ -1,3 +1,5 @@
+'use client';
+
 import React, {
   useState,
   useEffect,
@@ -8,7 +10,7 @@ import React, {
 import gsap from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useInView, useMotionValue, useSpring } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import Lenis from 'lenis';
 import ProfileCard from './ProfileCard';
 import Masonry from './Masonry';
@@ -17,6 +19,16 @@ import GradientText from './GradientText';
 gsap.registerPlugin(InertiaPlugin);
 
 const IS_TOUCH = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+// SSR-safe touch detection: first client render must match the server (non-touch),
+// so the real value is only applied after mount.
+function useIsTouch() {
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    setIsTouch(IS_TOUCH);
+  }, []);
+  return isTouch;
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    CountUp — animated number counter (inline, no separate file)
@@ -156,6 +168,7 @@ function DotGrid({
   const baseRgb = useMemo(() => hexToRgbDot(baseColor), [baseColor]);
   const activeRgb = useMemo(() => hexToRgbDot(activeColor), [activeColor]);
   const path = useMemo(() => {
+    if (typeof Path2D === 'undefined') return null;
     const p = new Path2D();
     p.arc(0, 0, dotSize / 2, 0, Math.PI * 2);
     return p;
@@ -2002,7 +2015,8 @@ function ProcessFlow() {
    Portfolio
 ───────────────────────────────────────────────────────────────────────────── */
 export default function Portfolio() {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const isTouch = useIsTouch();
   const [openCase, setOpenCase] = useState(null);
   const [tSlide, setTSlide] = useState(0);
   const [sent, setSent] = useState(false);
@@ -2251,7 +2265,7 @@ export default function Portfolio() {
               </div>
             ))}
             <button
-              onClick={() => { setOpenCase(null); navigate(`/projects/${activeProject.id}`); }}
+              onClick={() => { setOpenCase(null); router.push(`/projects/${activeProject.id}`); }}
               style={{ width: '100%', marginTop: 8, padding: '12px', background: ACCENT, border: 'none', borderRadius: 10, color: '#fff', fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer', transition: 'opacity .2s' }}
               onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
               onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
@@ -2319,7 +2333,7 @@ export default function Portfolio() {
           width: '100%',
         }}
       >
-        {!IS_TOUCH && (
+        {!isTouch && (
           <DotGrid
             dotSize={6}
             gap={22}
@@ -3428,7 +3442,7 @@ export default function Portfolio() {
                 glowRadius={32}
                 glowIntensity={1.0}
               >
-                <div style={{ padding: '28px', cursor: 'pointer' }} onClick={() => navigate(`/articles/${a.slug}`)}>
+                <div style={{ padding: '28px', cursor: 'pointer' }} onClick={() => router.push(`/articles/${a.slug}`)}>
                   <div
                     style={{
                       display: 'flex',

@@ -1,4 +1,6 @@
-import { useParams, useNavigate } from 'react-router-dom';
+'use client';
+
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const ACCENT = '#8B5CF6';
@@ -22,7 +24,7 @@ const PROJECTS = [
 
 export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const project = PROJECTS.find(p => String(p.id) === id);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function ProjectPage() {
     <div style={{ minHeight: '100vh', background: '#080810', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ textAlign: 'center' }}>
         <p style={{ color: '#555', fontFamily: "'DM Mono',monospace", marginBottom: 16 }}>Project not found</p>
-        <button onClick={() => navigate('/')} style={{ background: ACCENT, border: 'none', borderRadius: 8, color: '#fff', padding: '12px 24px', cursor: 'pointer', fontSize: 14 }}>← Back home</button>
+        <button onClick={() => router.push('/')} style={{ background: ACCENT, border: 'none', borderRadius: 8, color: '#fff', padding: '12px 24px', cursor: 'pointer', fontSize: 14 }}>← Back home</button>
       </div>
     </div>
   );
@@ -50,7 +52,7 @@ export default function ProjectPage() {
       {/* Back nav */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, height: 60, display: 'flex', alignItems: 'center', padding: '0 clamp(20px,5vw,60px)', background: 'rgba(8,8,16,.88)', backdropFilter: 'blur(16px)', borderBottom: '0.5px solid #1a1030' }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => router.back()}
           style={{ background: 'none', border: '1px solid #2a2040', borderRadius: 8, color: '#aaa', cursor: 'pointer', padding: '8px 16px', fontSize: 13, fontFamily: "'DM Mono',monospace", display: 'flex', alignItems: 'center', gap: 8, transition: 'color .2s, border-color .2s' }}
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = ACCENT2; (e.currentTarget as HTMLButtonElement).style.borderColor = ACCENT; }}
           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#aaa'; (e.currentTarget as HTMLButtonElement).style.borderColor = '#2a2040'; }}
@@ -104,7 +106,7 @@ export default function ProjectPage() {
         {/* Footer CTA */}
         <div style={{ textAlign: 'center', paddingTop: 16 }}>
           <p style={{ fontSize: 15, color: '#555', marginBottom: 24 }}>Interested in working together?</p>
-          <button onClick={() => { navigate('/'); setTimeout(() => document.getElementById('Contact')?.scrollIntoView({ behavior: 'smooth' }), 200); }} style={{ padding: '14px 32px', background: ACCENT, border: 'none', borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans',sans-serif" }}>
+          <button onClick={() => { router.push('/'); setTimeout(() => document.getElementById('Contact')?.scrollIntoView({ behavior: 'smooth' }), 200); }} style={{ padding: '14px 32px', background: ACCENT, border: 'none', borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: "'DM Sans',sans-serif" }}>
             Get in Touch →
           </button>
         </div>
